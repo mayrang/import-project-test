@@ -1,11 +1,25 @@
 import React, { useState } from "react";
+import axios from "axios";
+import {useRouter} from "next/router";
 
 const Login = () => {
     const [email, setEmail] = useState("");
     const [nickname, setNickname] = useState("");
     const [error, setError] = useState({});
-    const submitLogin = (e) => {
+    const router = useRouter();
+    const submitLogin = async (e) => {
         e.preventDefault();
+        try{
+            const result = await axios.post("/auth/login", {
+                email, 
+                nickname
+            });
+            console.log(result.data);
+            router.push("/");
+        }catch(err){
+            console.log(err);
+            setError(err?.response?.data || {});
+        }
     }
     return (
         <div className="bg-gray-200">

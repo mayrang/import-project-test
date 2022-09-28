@@ -37,6 +37,12 @@ export class User extends BaseEntity {
     @Column({nullable: true})
     blog: string;
 
+    @Column({nullable: true})
+    fieldOfHope: string;
+
+    @Column({nullable: true})
+    jobObjective: string;
+
     @OneToMany(() => AvailableLanguage, (availableLanguage) => availableLanguage.user)
     availableLanguages: AvailableLanguage[];
 

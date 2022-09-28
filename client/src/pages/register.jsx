@@ -10,6 +10,8 @@ const Register = () => {
     const [department, setDepartment] = useState("");
     const [grade, setGrade] = useState("1")
     const [blog, setBlog] = useState("");
+    const [jobObjective, setJobObjective] = useState("");
+    const [fieldOfHope, setFieldOfHope] = useState("");
     const [error, setError] = useState({});
     const [level, setLevel] = useState("Normal");
     const router = useRouter();
@@ -26,6 +28,9 @@ const Register = () => {
                 grade,
                 blog,
                 level,
+                fieldOfHope,
+                jobObjective
+                
 
             });
             console.log(result.data);
@@ -86,6 +91,26 @@ const Register = () => {
                         />
                         <small className="text-red-500 font-medium">{error.blog}</small>
                     </div>
+                    <div className="mb-3">
+                        <input 
+                            className="w-full border-gray-300 bg-gray-50 p-3  border rounded hover:outline-none  focus:bg-white hover:bg-white" 
+                            placeholder="희망분야"
+                            value={fieldOfHope}
+                            onChange={(e) => setFieldOfHope(e.target.value)}
+                            
+                        />
+                        <small className="text-red-500 font-medium">{error.blog}</small>
+                    </div>
+                    <div className="mb-3">
+                        <input 
+                            className="w-full border-gray-300 bg-gray-50 p-3  border rounded hover:outline-none  focus:bg-white hover:bg-white" 
+                            placeholder="희망직군"
+                            value={jobObjective}
+                            onChange={(e) => setJobObjective(e.target.value)}
+                            
+                        />
+                        <small className="text-red-500 font-medium">{error.blog}</small>
+                    </div>
 
                     {level !== "Normal" && (
                         <>
@@ -97,7 +122,7 @@ const Register = () => {
                             onChange={(e) => setStudentId(e.target.value)}
                             
                         />
-                        <small className="text-red-500 font-medium">{error.studentId}</small>
+                       
                     </div>
                     <div className="mb-3">
                         <input 
@@ -107,7 +132,7 @@ const Register = () => {
                             onChange={(e) => setDepartment(e.target.value)}
                             
                         />
-                        <small className="text-red-500 font-medium">{error.studentId}</small>
+                       
                     </div>
                     <div className="mb-3">
                         <select id="small" value={grade} onChange={(e) => setGrade(e.target.value)} className="block p-2 mb-6 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
