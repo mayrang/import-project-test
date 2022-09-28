@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios";
 
 const Register = () => {
     const [nickname, setNickname] = useState("");
@@ -9,7 +10,28 @@ const Register = () => {
     const [grade, setGrade] = useState("1")
     const [blog, setBlog] = useState("");
     const [error, setError] = useState({});
-    const [level, setLevel] = useState("Normal")
+    const [level, setLevel] = useState("Normal");
+
+    const submitRegister =  async (e) => {
+        e.preventdefault();
+        try{
+            if(nickname.trim() == "" || email.trim() == "" || level.trim() == "") return ;
+            const result = await axios.post("/auth/register", {
+                nickname,
+                email,
+                studentId,
+                phoneNumber,
+                department,
+                grade,
+                blog,
+                level,
+
+            });
+            console.log(result.data);
+        }catch(err){
+            console.log(err);
+        }
+    }
     return (
         <div className="bg-gray-200 w-full ">
         <div className="flex flex-col items-center justify-center p-6 h-screen">
@@ -21,7 +43,7 @@ const Register = () => {
                     <option value="Student">학생</option>
                     <option value="Normal" >일반인</option>
                 </select>
-                <form>
+                <form onSubmit={submitRegister}>
                     <div className="mb-3">
                         <input 
                             className="w-full border-gray-300 bg-gray-50 p-3  border rounded hover:outline-none focus:bg-white hover:bg-white" 

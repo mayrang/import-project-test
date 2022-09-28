@@ -30,7 +30,7 @@ export class User extends BaseEntity {
     @Column()
     level: string;
 
-    @Column({nullable: true, unique: true})
+    @Column({unique: true})
     @IsEmail(undefined, {message: "이메일 형식으로 작성해야 합니다."})
     email: string;
 
