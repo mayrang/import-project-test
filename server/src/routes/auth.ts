@@ -1,4 +1,6 @@
 import {Router, Request, Response} from "express";
+import { AvailableFramework } from "../entity/AvailableFramework";
+import { AvailableLanguage } from "../entity/AvailableLanguage";
 import { User } from "../entity/User";
 
 const router = Router();
@@ -16,6 +18,9 @@ router.post("/register", async (req:Request, res:Response) => {
         if(checkUser) return res.status(400).json({email: "중복되는 이메일은 사용할 수 없습니다."});
 
         const user = new User();
+        const availableLanguage = new AvailableLanguage();
+        const availableFramework = new AvailableFramework();
+
         user.nickname = nickname;
         user.email = email;
         user.level = level;
@@ -23,11 +28,22 @@ router.post("/register", async (req:Request, res:Response) => {
             user.studentId = studentId;
             user.grade = grade;
             user.department = department;
+            availableLanguage.languageName = "Python";
+            availableFramework.framework = "Django";
+        }else{
+            availableLanguage.languageName = "Java";
+            availableFramework.framework = "Spring";
         }
         if(phoneNumber.trim() !== "") user.phoneNumber = phoneNumber;
         if(blog.trim() !== "") user.blog = blog;
 
         await user.save();
+
+        availableFramework.user = user;
+        availableLanguage.user = user;
+
+        await availableFramework.save();
+        await availableLanguage.save();
 
         return res.status(200).json(user);
 
