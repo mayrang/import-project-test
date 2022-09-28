@@ -2,7 +2,7 @@ import {BaseEntity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, Entit
 import { User } from "./User";
 
 
-@Entity("clubApplications")
+@Entity("clubapplications")
 export class ClubApplication extends BaseEntity {
     @PrimaryGeneratedColumn()
     clubApplicationId: number;

@@ -2,7 +2,7 @@ import {BaseEntity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, Entit
 import { User } from "./User";
 
 
-@Entity("availableLanguages")
+@Entity("availablelanguages")
 export class AvailableLanguage extends BaseEntity {
     @PrimaryGeneratedColumn()
     userId: number;

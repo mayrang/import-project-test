@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import {useRouter} from "next/router";
 
 const Register = () => {
     const [nickname, setNickname] = useState("");
@@ -11,9 +12,9 @@ const Register = () => {
     const [blog, setBlog] = useState("");
     const [error, setError] = useState({});
     const [level, setLevel] = useState("Normal");
-
+    const router = useRouter();
     const submitRegister =  async (e) => {
-        e.preventdefault();
+        e.preventDefault();
         try{
             if(nickname.trim() == "" || email.trim() == "" || level.trim() == "") return ;
             const result = await axios.post("/auth/register", {
@@ -28,6 +29,7 @@ const Register = () => {
 
             });
             console.log(result.data);
+            router.push("/");
         }catch(err){
             console.log(err);
         }

@@ -2,7 +2,7 @@ import {BaseEntity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, Entit
 import { User } from "./User";
 
 
-@Entity("availableFrameworks")
+@Entity("availableframeworks")
 export class AvailableFramework extends BaseEntity {
     @PrimaryGeneratedColumn()
     userId: number;

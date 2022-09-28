@@ -5,6 +5,8 @@ import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import { AppDataSource } from "./data-source";
 
+import authRoutes from "./routes/auth";
+
 const app = express();
 
 dotenv.config();
@@ -15,6 +17,9 @@ app.use(cors({
     credentials: true
 }));
 app.use(cookieParser());
+
+
+app.use("/api/auth", authRoutes);
 
 
 let port = 4000;
