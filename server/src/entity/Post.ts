@@ -1,4 +1,5 @@
-import {Entity, BaseEntity, PrimaryGeneratedColumn, Column, JoinColumn, ManyToOne, CreateDateColumn} from "typeorm";
+import {Entity, BaseEntity, OneToMany, PrimaryGeneratedColumn, Column, JoinColumn, ManyToOne, CreateDateColumn} from "typeorm";
+import { Comment } from "./Comment";
 import { User } from "./User";
 
 @Entity("posts")
@@ -24,4 +25,7 @@ export class Post extends BaseEntity {
     @ManyToOne(() => User, (user) => user.posts)
     @JoinColumn({name: "userId", referencedColumnName: "userId"})
     user: User
+
+    @OneToMany(() => Comment, (comment) => comment.user)
+    comments: Comment[];
 }

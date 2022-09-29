@@ -36,13 +36,21 @@ export default function Home({user}) {
         <Link href={"posts/create"}>
           <a className="border rounded p-3">글쓰기</a>
         </Link>
+        {(user?.level === "Student" || user?.level === "Normal") && (
+          <Link href={"/application"}>
+            <a className="border rounded p-3">동아리 지원서</a>
+          </Link>
+        )}
       </div>
-
-      <div>
-        <Link href={"/admin"}>
-          <a className="border rounded p-3">관리자페이지</a>
-        </Link>
-      </div>
+      
+      {(user?.level === "Root" || user?.level === "Manager")&&(
+         <div>
+         <Link href={"/admin"}>
+           <a className="border rounded p-3">관리자페이지</a>
+         </Link>
+       </div>
+      )}
+     
       </>
       )}
       

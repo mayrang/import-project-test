@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import { AppDataSource } from "./data-source";
 
+import postsRoutes from "./routes/posts";
 import authRoutes from "./routes/auth";
 
 const app = express();
@@ -20,7 +21,7 @@ app.use(cookieParser());
 
 
 app.use("/api/auth", authRoutes);
-
+app.use("/api/posts", postsRoutes);
 
 let port = 4000;
 

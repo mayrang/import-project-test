@@ -20,19 +20,15 @@ export default function PostForm() {
 
            // post.postId= uuidv4();
             //post.postTime= new Date().getTime();
-            const result = await axios.post(`posts/edit`,{
-                body: JSON.stringify({
-                    //postId:post.postId,
-                    postTitle:post.postTitle,
-                    postMain:post.postMain,
-                    //postTime:post.postTime,
-                }),
-                headers: { "Content-Type": `application/json`}
+            const result = await axios.post(`posts/create`,{
+                postTitle:post.postTitle,
+                postMain:post.postMain,
             });
+            console.log(result.data)
             toast.success("저장되었습니다.", { //으잉 왜 이건 안되냐
                 position:"bottom-right"
             });
-            router.push(`/posts/${result.data.id}`);
+            router.push(`/posts/${result.data.postId}`);
 
         } catch (error) {
             console.error(error);
