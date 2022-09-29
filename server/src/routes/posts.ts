@@ -58,4 +58,19 @@ router.get("/:id", async (req:Request, res:Response) => {
     }
 });
 
+router.delete("/:postId", userMiddleware, async (req:Request, res:Response) => {
+    const postId = req.params.postId;
+    try{
+        const user = res.locals.user;
+        if(!user) return res.status(400).send("유저가 존재하지 않습니다.");
+        const post = await Post.findOneByOrFail({postId: parseInt(postId)});
+        if(post.userId !== user.userId) return res.status(400).send("삭제 권한이 없습니다.");
+        await post.remove();
+        return res.status(200).send("삭제 성공")
+    }catch(err){
+        console.log(err);
+        return res.status(500).send("삭제 과정에서 서버 에러!")
+    }
+});
+
 export default router;
