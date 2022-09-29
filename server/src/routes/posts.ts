@@ -37,17 +37,17 @@ router.get("/:id", async (req:Request, res:Response) => {
         const postData = await Post.findOneByOrFail({
             postId: parseInt(postId)
         });
-        console.log(postData)
+
         post.push(postData);
         const comments = await Comment.findBy({
             postId: postData!.postId
         });
-        console.log(postData);
+
         post = [
             ...post,
             ...comments
         ];
-        console.log(post)
+
 
         
 

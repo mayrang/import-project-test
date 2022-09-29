@@ -1,58 +1,46 @@
 import axios from "axios";
+import { useRouter } from "next/router";
 import React from "react";
 import PostPage from "../../components/PostPage";
 
-const PostView = ({post, user}) => {
+const PostView = ({user}) => {
+    const router = useRouter();
+    const {postId} = router.query;
     return(
         <>
-        {post && (
-            // 포스트 페이지 post 배열, user 객체
-            <PostPage post={post} user={user}/>
-        )}
+            {/* 경로 넘겨주기 */}
+            <PostPage  user={user} path={postId}/>
+
         </>        
     );
 };
 
 export default PostView;
 
-export const getServerSideProps = async ({req, query}) => {
-    /* postData를 담아놓을 빈 배열**/
-    let post = [];
-    // userData를 담아놓은 빈 객체
-    let user = {};
+export const getServerSideProps = async ({req}) => {
+    // user 데이터를 가져오기 위한 작업
     try{
-        console.log(query)
+        // cookie 존재 여부 확인
         const cookie = req.headers.cookie;
-        console.log(cookie)
-        const postData= await axios.get(`${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/api/posts/${query.postId}`);
-        post = [...postData.data];
-        const userData = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/api/auth/me`, {
+    //     console.log(cookie)
+        if(!cookie) throw new Error("쿠키가 존재하지 않습니다.")
+        const user = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/api/auth/me`, {
             headers: {
                 cookie
             }
-        })
-       
-        user = {...userData.data};
+        });
+        console.log(user)
         return {
             props: {
-                post,
-                user
+                user: user.data
             }
         }
     }catch(err){
-        console.log(err)
-        // post에 데이터가 있고 유저 객체가 없을 때는 post 리턴
-        if(post.length > 0){
-            console.log(post)
-            return {
-                props: {post}
-            }
-        }else{
-            return {
-                props: {}
-            }
+        console.log(err);
+        return {
+            props:{}
         }
-        
     }
+
     
 }

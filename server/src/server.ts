@@ -7,6 +7,7 @@ import { AppDataSource } from "./data-source";
 
 import postsRoutes from "./routes/posts";
 import authRoutes from "./routes/auth";
+import commentsRoutes from "./routes/comments";
 
 const app = express();
 
@@ -22,6 +23,7 @@ app.use(cookieParser());
 
 app.use("/api/auth", authRoutes);
 app.use("/api/posts", postsRoutes);
+app.use("/api/comments", commentsRoutes);
 
 let port = 4000;
 
