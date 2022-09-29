@@ -10,7 +10,7 @@ export class Post extends BaseEntity {
     @Column()
     postTitle: string;
 
-    @Column()
+    @Column("longtext")
     main: string;
 
     @Column()

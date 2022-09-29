@@ -63,13 +63,14 @@ export default function PostForm() {
                     >
                         Write a main
                     </label>
-                    <input
+                    <textarea
+                        style={{minWidth: 600, minHeight: 400}}
                         name="postMain"
                         id="postMain"
                         placeholder="Main"
                         onChange={handleChange}
                         value={post.postMain}
-                    ></input>
+                    ></textarea>
                 </div>
 
                 <button>
