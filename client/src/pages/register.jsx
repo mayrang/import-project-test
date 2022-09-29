@@ -47,6 +47,7 @@ const Register = () => {
                 <select id="small" value={level} onChange={(e) => setLevel(e.target.value)} className="block p-2 mb-6 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                     <option value="Root">관리자</option>
                     <option value="Manager">임원진</option>
+                    <option value="Member">동아리 회원</option>
                     <option value="Student">학생</option>
                     <option value="Normal" >일반인</option>
                 </select>

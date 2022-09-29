@@ -27,7 +27,7 @@ router.post("/register", async (req:Request, res:Response) => {
         user.nickname = nickname;
         user.email = email;
         user.level = level;
-        if(level !==  "Normal"){
+        if(level ===  "Student"){
             user.studentId = studentId;
             user.grade = grade;
             user.department = department;
