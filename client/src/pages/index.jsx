@@ -37,7 +37,7 @@ export default function Home({user}) {
           <a className="border rounded p-3">글쓰기</a>
         </Link>
         {(user?.level === "Student" || user?.level === "Normal") && (
-          <Link href={"/application"}>
+          <Link href={"/clubapp"}>
             <a className="border rounded p-3">동아리 지원서</a>
           </Link>
         )}
