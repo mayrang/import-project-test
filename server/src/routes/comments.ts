@@ -50,4 +50,26 @@ router.delete("/:commentId", userMiddleware, async (req:Request, res:Response) =
     }
 });
 
+
+router.post("/edit/:commentId", userMiddleware, async (req:Request, res:Response) => {
+    const commentId = req.params.commentId;
+    const {editComment} = req.body;
+    try{
+        const user = res.locals.user;
+        if(editComment.trim() === "") return res.status(400).send("댓글을 비워둘 수 없습니다.");
+        if(!user) return res.status(200).send("로그인이 안되어있습니다.");
+        const comment = await Comment.findOneBy({
+            commentId: parseInt(commentId)
+        });
+        if(!comment) return res.status(400).send("해당 댓글이 존재하지 않습니다.");
+        if(comment.userId !== user.userId ) return res.status(400).send('수정 권한이 없습니다.');
+        comment.comment = editComment;
+        await comment.save();
+
+        return res.status(200).send("댓글 수정 성공")
+    }catch(err){
+        console.log(err);
+        return res.status(500).send("댓글 수정과정에서 서버 에러")
+    }
+})
 export default router;

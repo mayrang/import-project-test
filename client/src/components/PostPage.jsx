@@ -9,6 +9,7 @@ import Comment from "./Comment";
 
 const PostPage = ({user, path}) => {
     const router = useRouter();
+    
 
     const fetcher = async (url) => {
         try{
@@ -54,7 +55,9 @@ const PostPage = ({user, path}) => {
             //toast.error(err.response.data.error);
             alert(err.response.data.error)
         }
-    }
+    };
+
+ 
     
     // post 데이터가 있는지 체크
     if(post&&post?.length > 0){
