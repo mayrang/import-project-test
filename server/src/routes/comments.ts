@@ -32,4 +32,22 @@ router.post("/:postId", userMiddleware, async (req:Request, res:Response) => {
     }
 });
 
+router.delete("/:commentId", userMiddleware, async (req:Request, res:Response) => {
+    const commentId = req.params.commentId;
+    try{
+        const user = res.locals.user;
+        if(!user) return res.status(500).send("로그인이 안되어있습니다.");
+        const comment = await Comment.findOneByOrFail({
+            commentId: parseInt(commentId)
+        });
+        if(comment.userId !== user.userId) return res.status(400).send("삭제 권한이 없습니다.");
+        await comment.remove();
+
+        return res.status(200).send("삭제 성공");
+    }catch(err){
+        console.log(err);
+        return res.status(500).send("댓글 삭제 과정에서 서버 에러!");
+    }
+});
+
 export default router;
