@@ -11,8 +11,8 @@ const ClubApp = () => {
     const submitClubApp = async (e) => {
         e.preventDefault();
         try{
-            // if(reasonForApplication.trim() === "") return alert("지원이유를 써주세요");
-            // if(projectExperience.trim() === "") return alert("프로젝트 경험을 써주세요")
+            if(reasonForApplication.trim() === "") return alert("지원이유를 써주세요");
+            if(projectExperience.trim() === "") return alert("프로젝트 경험을 써주세요")
             await axios.post(`/application/`, {
                 reasonForApplication, 
                 projectExperience
