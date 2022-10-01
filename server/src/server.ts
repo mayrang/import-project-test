@@ -9,6 +9,7 @@ import postsRoutes from "./routes/posts";
 import authRoutes from "./routes/auth";
 import commentsRoutes from "./routes/comments";
 import applicationRoutes from "./routes/application";
+import adminRoutes from "./routes/admin";
 
 const app = express();
 
@@ -26,6 +27,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/posts", postsRoutes);
 app.use("/api/comments", commentsRoutes);
 app.use("/api/application", applicationRoutes);
+app.use("/api/admin", adminRoutes);
 
 let port = 4000;
 

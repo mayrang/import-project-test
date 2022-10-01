@@ -2,6 +2,7 @@ import {BaseEntity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, Entit
 import { User } from "./User";
 
 
+
 @Entity("availablelanguages")
 export class AvailableLanguage extends BaseEntity {
     @PrimaryGeneratedColumn()
@@ -16,5 +17,6 @@ export class AvailableLanguage extends BaseEntity {
     @ManyToOne(() => User, (user) => user.availableLanguages)
     @JoinColumn({name: "userId2", referencedColumnName: "userId"})
     user: User;
+
 
 }

@@ -5,7 +5,7 @@ import React from "react";
 import { useEffect } from "react";
 
 
-const AdminPage = ({error}) => {
+const AdminIndex = ({error}) => {
 
     const router = useRouter()
 
@@ -49,7 +49,7 @@ const AdminPage = ({error}) => {
     );
 };
 
-export default AdminPage;
+export default AdminIndex;
 
 export const getServerSideProps = async ({req}) => {
     try{
@@ -63,7 +63,8 @@ export const getServerSideProps = async ({req}) => {
         });
 
         // 관리자 권한만 접속가능하도록 에러 발생
-        if(user.level !== "root") throw new Error("권한이 없습니다.");
+        console.log(user)
+        if(user.data.level !== "Root") throw new Error("권한이 없습니다.");
         return {
             props: {}
         }
