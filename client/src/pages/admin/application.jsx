@@ -1,4 +1,5 @@
 import React from "react";
+import { getServerSideProps } from ".";
 import AdminPage from "../../components/AdminPage";
 
 const ClubApplications = () => {
@@ -8,3 +9,4 @@ const ClubApplications = () => {
 };
 
 export default ClubApplications;
+
