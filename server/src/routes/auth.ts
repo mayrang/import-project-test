@@ -75,7 +75,7 @@ router.post("/login", async (req:Request, res:Response) => {
 
         const token = jwt.sign(email, process.env.JWT_SECRET_KEY);
 
-        res.set("Set-Cookie", cookie.serialize("token", token, {httpOnly: true, maxAge: 60*30, path: "/"}));
+        res.set("Set-Cookie", cookie.serialize("token", token, {httpOnly: true, maxAge: 60*120, path: "/"}));
         return res.status(200).json(user);
     }catch(err){
         console.log(err);

@@ -16,7 +16,7 @@ export class ClubApplication extends BaseEntity {
     @Column()
     userId: number;
 
-    @ManyToOne(() => User, (user) => user.clubApplications)
+    @ManyToOne(() => User, (user) => user.clubApplications, {onDelete: "CASCADE"})
     @JoinColumn({name: "userId", referencedColumnName: "userId"})
     user: User;
 

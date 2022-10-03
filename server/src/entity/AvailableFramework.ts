@@ -13,7 +13,7 @@ export class AvailableFramework extends BaseEntity {
     @Column()
     userId2: number;
 
-    @ManyToOne(() => User, (user) => user.availableFrameworks)
+    @ManyToOne(() => User, (user) => user.availableFrameworks, {onDelete: "CASCADE"})
     @JoinColumn({name: "userId2", referencedColumnName: "userId"})
     user: User;
 

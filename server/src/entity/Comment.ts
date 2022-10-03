@@ -22,11 +22,11 @@ export class Comment extends BaseEntity {
     @Column()
     postId: number;
 
-    @ManyToOne(() => User, (user) => user.comments)
+    @ManyToOne(() => User, (user) => user.comments, {onDelete: "CASCADE"})
     @JoinColumn({name: "userId", referencedColumnName: "userId"})
     user: User;
 
-    @ManyToOne(() => Post, (post) => post.comments)
+    @ManyToOne(() => Post, (post) => post.comments, {onDelete: "CASCADE"})
     @JoinColumn({name: "postId", referencedColumnName: "postId"})
     post: Post
 }

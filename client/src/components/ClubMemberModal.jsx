@@ -1,5 +1,9 @@
 import React from "react";
 
+/**
+ * setShowModal: modal 닫기 위한 props
+ * 
+ */
 const ClubMemberModal = ({data, setShowModal}) => {
     return(
         <div className="h-screen w-full fixed left-0 top-0 flex justify-center items-center bg-black bg-opacity-40 text-center">

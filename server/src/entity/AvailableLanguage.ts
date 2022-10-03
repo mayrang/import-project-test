@@ -14,7 +14,7 @@ export class AvailableLanguage extends BaseEntity {
     @Column()
     userId2: number;
 
-    @ManyToOne(() => User, (user) => user.availableLanguages)
+    @ManyToOne(() => User, (user) => user.availableLanguages, {onDelete: "CASCADE"})
     @JoinColumn({name: "userId2", referencedColumnName: "userId"})
     user: User;
 

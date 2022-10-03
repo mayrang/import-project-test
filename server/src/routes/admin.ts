@@ -126,4 +126,52 @@ router.get("/members/club", userMiddleware, async (_:Request, res:Response) => {
     }
 })
 
+
+router.post("/application/:userId", userMiddleware, async (req:Request, res:Response) => {
+    const result = req.query.result;
+    const userId = req.body.userId
+    try{
+        const clubApplication = await ClubApplication.findOneBy({ userId });
+        if(!clubApplication) return res.status(400).send("지원서가 존재하지 않습니다.");
+        const user = await User.findOneBy({userId});
+        if(!user) return res.status(400).send("해당 유저가 존재하지 않습니다.");
+
+        if(result === "1"){
+            user.level = "member"
+        }else if(result === "0"){
+            
+        }else{
+            return res.status(400).send("query value error")
+        }
+        await clubApplication.remove();
+        await user.save();
+
+        return res.status(200).send("성공");
+
+    }catch(err){
+        console.log(err);
+        return res.status(500).send("합불 처리과정에서 서버 에러")
+    }
+    
+});
+
+router.delete("/members", userMiddleware,async (req:Request, res:Response) => {
+    const userId = req.body.userId;
+    try{
+        const users = await User.find({
+            where: {
+                userId: In(userId)
+            }
+        });
+
+        console.log(users);
+        await AppDataSource.getRepository(User).delete({
+            userId: In(userId)
+        });
+        return res.status(200).send("삭제 성공")
+    }catch(err){
+        console.log(err);
+        return res.status(500).send()
+    }
+})
 export default router;

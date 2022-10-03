@@ -21,7 +21,7 @@ export class Project extends BaseEntity {
     @Column()
     userId: number;
 
-    @ManyToOne(() => User, (user) => user.projects)
+    @ManyToOne(() => User, (user) => user.projects, {onDelete: "CASCADE"})
     @JoinColumn({name: "userId", referencedColumnName: "userId"})
     user: User
 }

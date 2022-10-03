@@ -43,21 +43,21 @@ export class User extends BaseEntity {
     @Column({nullable: true})
     jobObjective: string;
 
-    @OneToMany(() => AvailableLanguage, (availableLanguage) => availableLanguage.user)
+    @OneToMany(() => AvailableLanguage, (availableLanguage) => availableLanguage.user, {cascade: true})
     availableLanguages: AvailableLanguage[];
 
-    @OneToMany(() => AvailableFramework, (availableFramework) => availableFramework.user)
+    @OneToMany(() => AvailableFramework, (availableFramework) => availableFramework.user, {cascade: true})
     availableFrameworks: AvailableFramework[];
 
-    @OneToMany(() => ClubApplication, (clubApplication) => clubApplication.user)
+    @OneToMany(() => ClubApplication, (clubApplication) => clubApplication.user, {cascade: true})
     clubApplications: ClubApplication[];
 
-    @OneToMany(() => Project, (project) => project.user)
+    @OneToMany(() => Project, (project) => project.user, {cascade: true})
     projects: Project[];
 
-    @OneToMany(() => Project, (post) => post.user)
+    @OneToMany(() => Project, (post) => post.user, {cascade: true})
     posts: Post[];
 
-    @OneToMany(() => Comment, (comment) => comment.user)
+    @OneToMany(() => Comment, (comment) => comment.user, {cascade: true})
     comments: Comment[];
 }
