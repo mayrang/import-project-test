@@ -47,7 +47,7 @@ const AdminPage = ({path}) => {
                     </thead>
                     <tbody>
                         {datas?.map((data) => (
-                            <AdminCard key={data.userId} data={data} />
+                            <AdminCard key={data.userId} data={data} path={path}/>
                         ))}
                     </tbody>
                 </table>
