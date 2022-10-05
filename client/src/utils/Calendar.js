@@ -43,14 +43,14 @@ export const setCalendarArray =(year, month, holidays) => {
     console.log("holidays", holidays)
     //이전 날짜
     let prevLastDate = new Date(year, month - 1, 0).getDate();
-    console.log(prevLastDate)
+    //console.log(prevLastDate)
     let prevLastDay = new Date(year, month - 1, 0).getDay();
-    console.log(prevLastDay)
+    //console.log(prevLastDay)
     //다음 날짜
     const nextDay = new Date(year, month, 0).getDay();
-    console.log(nextDay)
+    //console.log(nextDay)
     const nextDate = new Date(year, month, 0).getDate();
-    console.log(nextDate)
+    //console.log(nextDate)
     //이전 날짜 만들기
     let PVLD = [];
     if (prevLastDay !== 6) {
@@ -70,10 +70,9 @@ export const setCalendarArray =(year, month, holidays) => {
     let TD = [];
     for(let i = 1; i < nextDate+1; i++){
       const dayFormat = year.toString() + (parseInt(month) < 10 ? "0"+month.toString() : month.toString()) + (i < 10 ? "0"+i.toString() : i.toString());
-      console.log(dayFormat)
-      // const dayPosts = posts.filter((post) => (dayjs(post.startTime).format("YYYYMMDD") <= dayFormat)&&(dayFormat <= dayjs(post.endTime).format("YYYYMMDD")));
-      console.log("dayPost", dayPosts);
-      const mapPosts = posts.map((post) => {
+      const dayPosts = posts.filter((post) => (dayjs(post.startTime).format("YYYYMMDD") <= dayFormat)&&(dayFormat <= dayjs(post.endTime).format("YYYYMMDD")));
+      //console.log("dayPost", dayPosts);
+      const mapPosts = dayPosts.map((post) => {
         if(dayjs(post.startTime).format("YYYYMMDD") !== dayjs(post.endTime).format("YYYYMMDD")){
           if(dayFormat === dayjs(post.startTime).format("YYYYMMDD")){
             post = {...post, start: true, multiple: post.reservationId, startTime: JSON.stringify(post.startTime), endTime: JSON.stringify(post.endTime)}
@@ -85,10 +84,18 @@ export const setCalendarArray =(year, month, holidays) => {
         }
         return post;
       });
-      console.log("mapPost", mapPosts);
       const sortedPosts = mapPosts.sort((a, b) => b.multiple - a.multiple);
-      console.log("sortedPosts", sortedPosts);
-      TD.push({date: i, type: "now", posts: sortedPosts});
+      const holiday = holidays.find((holiday) => holiday.locdate?.toString() === dayFormat);
+      if(holiday){
+        TD.push({date: i, type: "now", posts: sortedPosts, holiday: holiday});
+      }else{
+        TD.push({date: i, type: "now", posts: sortedPosts, });
+      }
+      
+
+
+      //console.log("sortedPosts", sortedPosts);
+     
     }
  
 

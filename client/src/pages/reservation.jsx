@@ -16,7 +16,7 @@ export default Reservation;
 export const getServerSideProps = async () => {
     try{
 
-        const result = await axios.get(`http://apis.data.go.kr/B090041/openapi/service/SpcdeInfoService/getHoliDeInfo?solYear=${"2022"}&solMonth=${"09"}&ServiceKey=${process.env.NEXT_PUBLIC_HOLIDAY_API_KEY}`)
+        const result = await axios.get(`http://apis.data.go.kr/B090041/openapi/service/SpcdeInfoService/getHoliDeInfo?solYear=${"2022"}&solMonth=${"10"}&ServiceKey=${process.env.NEXT_PUBLIC_HOLIDAY_API_KEY}`)
         const holidays = result.data.response.body?.items?.item || [];
         console.log(holidays)
         const calendarData = setCalendarArray(2022, 10, holidays)
