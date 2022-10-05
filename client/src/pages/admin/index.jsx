@@ -22,6 +22,7 @@ const AdminIndex = ({error}) => {
 
     return (
         <div className="bg-gray-200 w-full">
+
             <div className="flex items-center justify-center h-screen p-5">
                 <div className=" w-10/12 md:w-96 mx-auto bg-white border rounded">
                     <h1 className="font-bold text-lg p-3">관리자 페이지</h1>
@@ -41,6 +42,7 @@ const AdminIndex = ({error}) => {
                                 <p>홈페이지</p> <p>회원</p> <p>관리</p>
                             </a>
                         </Link>
+                        
                     </div>
                     
                 </div>
