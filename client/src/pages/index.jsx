@@ -15,7 +15,6 @@ export default function Home({user}) {
   }
   return (
     <div className="p-10 flex items-center justify-between">
-                  <ViewCalendar />
       <div>
         {user ? (
            <button onClick={clickLogout} className="border rounded p-3">로그아웃</button>

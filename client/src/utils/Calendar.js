@@ -41,6 +41,9 @@ const posts = [
 
 export const setCalendarArray =(year, month, holidays) => {
     console.log("holidays", holidays)
+    let monthArray = [];
+    let weekArray = [];
+    let count = 0
     //이전 날짜
     let prevLastDate = new Date(year, month - 1, 0).getDate();
     //console.log(prevLastDate)
@@ -51,23 +54,23 @@ export const setCalendarArray =(year, month, holidays) => {
     //console.log(nextDay)
     const nextDate = new Date(year, month, 0).getDate();
     //console.log(nextDate)
-    //이전 날짜 만들기
-    let PVLD = [];
+
     if (prevLastDay !== 6) {
       for (let i = 0; i < prevLastDay + 1; i++) {
+        weekArray.unshift({date: prevLastDate-i, type:"prev"});
+        if(count === 6){
 
-        PVLD.unshift({date: prevLastDate, type:"prev"});
+          monthArray.push(weekArray);
+          weekArray = [];
+          count = 0;
+        }else{
+          count++
+        }
+        
+
       }
     }
-    //다음 날짜 만들기
-    let TLD = [];
-    for (let i = 1; i < 7 - nextDay; i++) {
-     
-      TLD.push({date: nextDate, type: "next"});
-    }
 
-    //현재날짜
-    let TD = [];
     for(let i = 1; i < nextDate+1; i++){
       const dayFormat = year.toString() + (parseInt(month) < 10 ? "0"+month.toString() : month.toString()) + (i < 10 ? "0"+i.toString() : i.toString());
       const dayPosts = posts.filter((post) => (dayjs(post.startTime).format("YYYYMMDD") <= dayFormat)&&(dayFormat <= dayjs(post.endTime).format("YYYYMMDD")));
@@ -85,19 +88,37 @@ export const setCalendarArray =(year, month, holidays) => {
         return post;
       });
       const sortedPosts = mapPosts.sort((a, b) => b.multiple - a.multiple);
-      const holiday = holidays.find((holiday) => holiday.locdate?.toString() === dayFormat);
-      if(holiday){
-        TD.push({date: i, type: "now", posts: sortedPosts, holiday: holiday});
+      if(holidays){
+        const holiday = holidays.find((holiday) => holiday.locdate?.toString() === dayFormat);
+        if(holiday){
+          weekArray.push({date: i, type: "now", posts: sortedPosts, holiday: holiday});
+        }else{
+          weekArray.push({date: i, type: "now", posts: sortedPosts, });
+        }
+      }
+      if(count === 6){
+        monthArray.push(weekArray);
+        weekArray = [];
+        count = 0;
       }else{
-        TD.push({date: i, type: "now", posts: sortedPosts, });
+        count++;
       }
       
-
-
-      //console.log("sortedPosts", sortedPosts);
      
     }
+    for (let i = 1; i < 7 - nextDay; i++) {
+      weekArray.push({date: i, type: "next"});
+      if(count === 6){
+        
+        monthArray.push(weekArray);
+        weekArray = [];
+        count = 0;
+      }else{
+        count++;
+      }
+    }
+
  
 
-    return PVLD.concat(TD, TLD);
+    return monthArray;
   };
