@@ -90,6 +90,7 @@ export const setCalendarArray =(year, month, holidays) => {
       const sortedPosts = mapPosts.sort((a, b) => b.multiple - a.multiple);
       if(holidays){
         const holiday = holidays.find((holiday) => holiday.locdate?.toString() === dayFormat);
+        console.log(holidays)
         if(holiday){
           weekArray.push({date: i, type: "now", posts: sortedPosts, holiday: holiday});
         }else{

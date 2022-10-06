@@ -45,7 +45,8 @@ export const getServerSideProps = async ({query}) => {
             
         }else{
             console.log(dayjs().get("hour"))
-            const result = await axios.get(`http://apis.data.go.kr/B090041/openapi/service/SpcdeInfoService/getHoliDeInfo?solYear=${dayjs().get("year").toString()}&solMonth=${dayjs().get("month").toString()}&ServiceKey=${process.env.NEXT_PUBLIC_HOLIDAY_API_KEY}`)
+            const result = await axios.get(`http://apis.data.go.kr/B090041/openapi/service/SpcdeInfoService/getHoliDeInfo?solYear=${dayjs().get("year").toString()}&solMonth=${(dayjs().get("month")+1).toString()}&ServiceKey=${process.env.NEXT_PUBLIC_HOLIDAY_API_KEY}`);
+            console.log("result", result)
             const holidays = result.data.response.body?.items?.item || [];
             console.log("holidays", holidays)
             const calendarData = setCalendarArray(2022, 10, holidays)
