@@ -5,7 +5,6 @@ import dayjs from "dayjs";
 import ViewCalendar from "../components/ViewCalendar";
 
 const Reservation = ({calendarData}) => {
-   // console.log(dayjs(JSON.parse(calendarData[9].posts[0].startTime)).toDate());
     console.log(calendarData)
     return (
         <>
@@ -33,10 +32,7 @@ export const getServerSideProps = async ({query}) => {
             month = parseInt(month) < 10 ? "0"+month : month;
             const result = await axios.get(`http://apis.data.go.kr/B090041/openapi/service/SpcdeInfoService/getHoliDeInfo?solYear=${year}&solMonth=${month}&ServiceKey=${process.env.NEXT_PUBLIC_HOLIDAY_API_KEY}`)
             const holidays = result.data.response.body?.items?.item || [];
-            console.log("holidays", holidays)
-            console.log(holidays)
             const calendarData = setCalendarArray(2022, 10, holidays)
-            console.log(calendarData)
             return {
                 props:{
                     calendarData
@@ -46,11 +42,11 @@ export const getServerSideProps = async ({query}) => {
         }else{
             console.log(dayjs().get("hour"))
             const result = await axios.get(`http://apis.data.go.kr/B090041/openapi/service/SpcdeInfoService/getHoliDeInfo?solYear=${dayjs().get("year").toString()}&solMonth=${(dayjs().get("month")+1).toString()}&ServiceKey=${process.env.NEXT_PUBLIC_HOLIDAY_API_KEY}`);
-            console.log("result", result)
+
             const holidays = result.data.response.body?.items?.item || [];
-            console.log("holidays", holidays)
+  
             const calendarData = setCalendarArray(2022, 10, holidays)
-            console.log(calendarData)
+
             return {
                 props:{
                     calendarData
