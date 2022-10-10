@@ -1,14 +1,64 @@
 import React from "react";
 import cls from "classnames";
 import CalendarPost from "./CalendarPost";
+import {useRouter} from "next/router";
+import dayjs from "dayjs";
 
+const ViewCalendar = ({calendarData, path}) => {
+    const router = useRouter();
+    const {year, month} = router.query;
+    const calendarYear = year||dayjs().format("YYYY");
+    const calendarMonth = month||dayjs().format("MM");
 
-const ViewCalendar = ({calendarData}) => {
-    
+    const clickNext = () => {
+        if(parseInt(month) === 12){
+            router.push({
+                pathname: path,
+                query: {
+                    year: (parseInt(calendarYear)+1).toString(),
+                    month: "1"
+                }
+            })
+        }else{
+            router.push({
+                pathname: path,
+                query: {
+                    year: calendarYear.toString(),
+                    month: (parseInt(calendarMonth)+1).toString()
+                }
+            })
+        }
+    };
+
+    const clickPrev = () => {
+        if(parseInt(month) === 1){
+            router.push({
+                pathname: path,
+                query: {
+                    year: (parseInt(calendarYear)-1).toString(),
+                    month: "12"
+                }
+            })
+        }else{
+            router.push({
+                pathname: path,
+                query: {
+                    year: calendarYear.toString(),
+                    month: (parseInt(calendarMonth)-1).toString()
+                }
+            })
+        }
+    };
+
     return (
         <div className="w-full ">
-             <div className="flex   h-screen items-center  justify-center">
-                <div className="w-full bg-white border px-3">
+            <div className="flex-col   h-screen items-center  justify-center">
+                <div className="flex items-center justify-between w-full  p-3 ">
+                    <div onClick={clickPrev} className="text-2xl">{"<"}</div>
+                    <div className="text-2xl">{calendarYear}년 {calendarMonth}월</div>
+                    <div onClick={clickNext} className="text-2xl">{">"}</div>
+                </div>
+                <div className="w-full bg-white  px-3">
                     <div className="flex items-center w-full rep text-center">
                         <div className="border flex-1 border-black bg-gray-200 grow">SUN</div>
                         <div className="border flex-1 border-black bg-gray-200 grow">MON</div>
@@ -24,28 +74,20 @@ const ViewCalendar = ({calendarData}) => {
                             <div key={idx} className="relative w-full h-full flex-1 border overflow-hidden overflow-ellipsis  whitespace-nowrap">
                                 <small className={cls("text-xs pl-1 font-semibold  ", {"text-gray-300":date.type === "prev" || date.type === "next"}, {"text-red-500":date.holiday||idx % 7 === 0})}>{date.date} </small>
                                 <small className="text-[10px] text-red-500">{date.holiday?.dateName}</small>
-                                {/* {date.posts?.length > 0 && (
-                                    <div 
-                                        className="md:h-5 w-full h-4 bg-blue-200 text-xs mb-1 overflow-hidden overflow-ellipsis whitespace-nowrap"
-                                    >
-                                        {date.posts[0].nickname || date.posts[0].content}
-                                    </div>
-                                )}
-                                {date.posts?.length > 1 && (
-                                    
-                                )} */}
+                                
                                 {date.posts?.map((post) => (
                                     <CalendarPost key={post.calendarId} post={post} />
                                 ))}
+                                {date.posts?.length > 0 &&<p className="absolute bottom-0 px-1  text-gray-400 text-[10px] md:text-xs">{date.posts?.length}개</p>}
                             </div>
                         ))}
+                        </div>
+                    ))}
                 </div>
-            ))}
+                <div className="flex justify-end items-center py-2 px-3">
+                    <button className="border rounded border-blue-500 text-sm md:text-lg  bg-white p-2 hover:bg-blue-500 hover:text-white">추가하기</button>
                 </div>
             </div>   
-
-            
-            
         </div>
     )
 };

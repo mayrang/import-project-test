@@ -1,11 +1,11 @@
-import axios from "axios";
 import React from "react";
+import axios from "axios";
 import { setCalendarArray } from "../utils/Calendar";
 import dayjs from "dayjs";
 import ViewCalendar from "../components/ViewCalendar";
 import { useRouter } from "next/router";
 
-const Reservation = ({calendarData}) => {
+const Schedule = ({calendarData}) => {
     console.log(calendarData)
     const router = useRouter();
     const path = router.pathname;
@@ -17,7 +17,7 @@ const Reservation = ({calendarData}) => {
     );
 };
 
-export default Reservation;
+export default Schedule;
 
 export const getServerSideProps = async ({query}) => {
     try{
@@ -29,7 +29,7 @@ export const getServerSideProps = async ({query}) => {
                 return {
                     redirect: {
                         permanent: false,
-                        destination: "/reservation",
+                        destination: "/schedule",
                     }
                 }
             }

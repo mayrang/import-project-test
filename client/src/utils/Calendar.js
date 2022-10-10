@@ -40,7 +40,7 @@ const posts = [
     calendarId: 6,
     startTime: dayjs("2022-10-04 10:00:00", "YYYY-MM-DD HH:mm:ss"),
     endTime: dayjs("2022-10-16 10:00:00", "YYYY-MM-DD HH:mm:ss"),
-    nickname: "박건상6",
+    nickname: "박걸상6",
     numberOfPeople: 3,
   },
   {
@@ -52,8 +52,8 @@ const posts = [
   },
 ]
 
-export const setCalendarArray =(year, month, holidays) => {
-
+export const setCalendarArray = (year, month, holidays) => {
+    
     let monthArray = [];
     let weekArray = [];
     let count = 0
@@ -106,11 +106,7 @@ export const setCalendarArray =(year, month, holidays) => {
         return 0;
 
       });
-      if(dayFormat === "20221004"){
-
-        console.log("sortedPosts", sortedPosts)
-
-      }
+      
       let index = [1, 2, 3];
       for(const post of sortedPosts){
        
@@ -147,8 +143,8 @@ export const setCalendarArray =(year, month, holidays) => {
       }
 
       if(holidays){
-        const holiday = holidays.find((holiday) => holiday.locdate?.toString() === dayFormat);
-
+        const holiday = holidays?.find((holiday) => holiday.locdate?.toString() === dayFormat);
+        console.log("holiday", holiday, dayFormat)
         if(holiday){
           weekArray.push({date: i, type: "now", posts: mapPosts, holiday: holiday});
          
