@@ -3,12 +3,20 @@ import cls from "classnames";
 import CalendarPost from "./CalendarPost";
 import {useRouter} from "next/router";
 import dayjs from "dayjs";
+import { useState } from "react";
+import ReservationAddModal from "./ReservationAddModal";
+import ScheduleAddModal from "./ScheduleAddModal";
 
-const ViewCalendar = ({calendarData, path}) => {
+
+const ViewCalendar = ({calendarData, path, user}) => {
+    const [reservationAddModal, setReservationAddmodal] = useState(false);
+    const [scheduleAddModal, setScheduleAddModal] = useState(false);
     const router = useRouter();
     const {year, month} = router.query;
     const calendarYear = year||dayjs().format("YYYY");
     const calendarMonth = month||dayjs().format("MM");
+
+   
 
     const clickNext = () => {
         if(parseInt(month) === 12){
@@ -46,11 +54,26 @@ const ViewCalendar = ({calendarData, path}) => {
                     year: calendarYear.toString(),
                     month: (parseInt(calendarMonth)-1).toString()
                 }
-            })
+            });
+
         }
     };
 
+
+    const clickAdd = () => {
+        if(path === "/reservation"){
+            setReservationAddmodal(true);
+            setScheduleAddModal(false);
+        }else if(path === "/schedule"){
+            setReservationAddmodal(false);
+            setScheduleAddModal(true);
+        }else{
+            return;
+        }
+    }
+
     return (
+        <>
         <div className="w-full ">
             <div className="flex-col   h-screen items-center  justify-center">
                 <div className="flex items-center justify-between w-full  p-3 ">
@@ -84,11 +107,28 @@ const ViewCalendar = ({calendarData, path}) => {
                         </div>
                     ))}
                 </div>
+                {user&&
+                path === "/reservation"&&
+                (user.level === "Root" || user.level === "Manager" || user.level === "Member")&&
+                (
                 <div className="flex justify-end items-center py-2 px-3">
-                    <button className="border rounded border-blue-500 text-sm md:text-lg  bg-white p-2 hover:bg-blue-500 hover:text-white">추가하기</button>
+                    <button onClick={clickAdd} className="border rounded border-blue-500 text-sm md:text-lg  bg-white p-2 hover:bg-blue-500 hover:text-white">예약 추가하기</button>
                 </div>
+                )}
+                {user&&
+                path === "/schedule"&&
+                (user.level === "Root" || user.level === "Manager")&& 
+                (
+                    <div className="flex justify-end items-center py-2 px-3">
+                       <button onClick={clickAdd} className="border rounded border-blue-500 text-sm md:text-lg  bg-white p-2 hover:bg-blue-500 hover:text-white">일정 추가하기</button>
+                    </div>
+                )}
             </div>   
         </div>
+        {reservationAddModal && <ReservationAddModal setShowModal={setReservationAddmodal} />}        
+        {scheduleAddModal && <ScheduleAddModal setShowModal={setScheduleAddModal} />}
+
+        </>
     )
 };
 

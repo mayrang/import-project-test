@@ -5,24 +5,35 @@ import dayjs from "dayjs";
 import ViewCalendar from "../components/ViewCalendar";
 import { useRouter } from "next/router";
 
-const Reservation = ({calendarData}) => {
-    console.log(calendarData)
+const Reservation = ({calendarData, user}) => {
+
     const router = useRouter();
     const path = router.pathname;
-    console.log("path", path)
+
+ 
     return (
         <>
-        <ViewCalendar calendarData={calendarData} path={path}/>
+        <ViewCalendar calendarData={calendarData} path={path} user={user}/>
+
         </>
     );
 };
 
 export default Reservation;
 
-export const getServerSideProps = async ({query}) => {
+export const getServerSideProps = async ({query, req}) => {
     try{
         const {year, month} = query;
-        
+        const cookie = req.headers.cookie;
+        let user = null;
+        if(cookie){
+            const result = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/api/auth/me`, {
+                headers: {
+                    cookie,
+                }
+            });
+            user = result.data || null;
+        }
 
         if(year&&month){
             if(year.match(/^[0-9]+$/) === null||month.match(/^[0-9]+$/) === null||parseInt(month)<0||parseInt(month)>13){
@@ -45,7 +56,8 @@ export const getServerSideProps = async ({query}) => {
             const calendarData = setCalendarArray(year, month, holidays)
             return {
                 props:{
-                    calendarData
+                    calendarData,
+                    user
                 }
             } 
             
@@ -63,7 +75,8 @@ export const getServerSideProps = async ({query}) => {
 
             return {
                 props:{
-                    calendarData
+                    calendarData,
+                    user
                 }
             } 
             

@@ -137,7 +137,7 @@ router.post("/application/:userId", userMiddleware, async (req:Request, res:Resp
         if(!user) return res.status(400).send("해당 유저가 존재하지 않습니다.");
 
         if(result === "1"){
-            user.level = "member"
+            user.level = "Member"
         }else if(result === "0"){
             
         }else{

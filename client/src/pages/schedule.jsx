@@ -5,22 +5,37 @@ import dayjs from "dayjs";
 import ViewCalendar from "../components/ViewCalendar";
 import { useRouter } from "next/router";
 
-const Schedule = ({calendarData}) => {
-    console.log(calendarData)
+const Schedule = ({calendarData, user}) => {
+
     const router = useRouter();
     const path = router.pathname;
-    console.log("path", path)
+
+    
+    console.log(user)
     return (
         <>
-        <ViewCalendar calendarData={calendarData} path={path}/>
+        <ViewCalendar calendarData={calendarData} user={user} path={path}/>
+        
+  
         </>
     );
 };
 
 export default Schedule;
 
-export const getServerSideProps = async ({query}) => {
+export const getServerSideProps = async ({query, req}) => {
     try{
+        const cookie = req.headers.cookie;
+        let user = null;
+        if(cookie){
+            const result = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/api/auth/me`, {
+                headers: {
+                    cookie
+                }
+            });
+            user = result.data || null;
+        }
+        console.log(user)
         const {year, month} = query;
         
 
@@ -45,7 +60,8 @@ export const getServerSideProps = async ({query}) => {
             const calendarData = setCalendarArray(year, month, holidays)
             return {
                 props:{
-                    calendarData
+                    calendarData,
+                    user
                 }
             } 
             
@@ -63,7 +79,8 @@ export const getServerSideProps = async ({query}) => {
 
             return {
                 props:{
-                    calendarData
+                    calendarData,
+                    user
                 }
             } 
             
