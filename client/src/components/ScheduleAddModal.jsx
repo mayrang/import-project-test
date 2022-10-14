@@ -1,11 +1,49 @@
-import React from "react";
+import React, { useState } from "react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 const ScheduleAddModal = ({setShowModal}) => {
+    const [startTime, setStartTime] = useState(new Date());
+    const [endTime, setEndTime] = useState(new Date());
     return (
         <div className="h-screen w-full fixed left-0 top-0 flex justify-center items-center bg-black bg-opacity-40 text-center">
             <div className="bg-white rounded w-10/12">
                 <div className="border-b px-4 py-2 flex-col text-left items-center">
-                  
+                    <div className="flex  itmes-center">
+                        <div className="mr-3">
+                            <div className="font-semibold mb-2">Start Time</div>
+                            <DatePicker
+                                selected={startTime}
+                                className="border rounded border-gray-500"
+                                onChange={(date) => setStartTime(date)}
+                                dateFormat="yyyy/MM/dd p"
+                                selectsStart
+                                startDate={startTime}
+                                endDate={endTime}
+                                showTimeSelect  
+
+                                minDate={new Date()}
+                            />
+                        </div>
+                        <div>
+                            <div className="font-semibold mb-2">End Time</div>
+                            <DatePicker
+                                selected={endTime}
+                                className="border rounded border-gray-500"
+                                onChange={(date) => setEndTime(date)}
+                                dateFormat="yyyy/MM/dd p"
+                                selectsEnd
+                                startDate={startTime}
+                                endDate={endTime}
+                                showTimeSelect
+                                minDate={startTime}
+                            />
+                        </div>
+
+                    </div>
+                    
+                    
+                
                 </div>
                 <div className="flex justify-between items-center w-full p-3">
                     <div>
