@@ -15,7 +15,7 @@ const ViewCalendar = ({calendarData, path, user}) => {
     const {year, month} = router.query;
     const calendarYear = year||dayjs().format("YYYY");
     const calendarMonth = month||dayjs().format("MM");
-
+    console.log(calendarData)
    
 
     const clickNext = () => {
@@ -95,7 +95,7 @@ const ViewCalendar = ({calendarData, path, user}) => {
                         <div key={idx} className="flex items-center w-full h-24 md:h-32">
                         {week.map((date, idx) => (
                             <div key={idx} className="relative w-full h-full flex-1 border overflow-hidden overflow-ellipsis  whitespace-nowrap">
-                                <small className={cls("text-xs pl-1 font-semibold  ", {"text-gray-300":date.type === "prev" || date.type === "next"}, {"text-red-500":date.holiday||idx % 7 === 0})}>{date.date} </small>
+                                <small className={cls("text-xs ml-1 font-semibold  ", {"text-gray-300":date.type === "prev" || date.type === "next"}, {"text-red-500":date.holiday||idx % 7 === 0}, {" bg-blue-200 bg-rounded rounded-full ":date.dayFormat === dayjs().format("YYYYMMDD")})}>{date.date} </small>
                                 <small className="text-[10px] text-red-500">{date.holiday?.dateName}</small>
                                 
                                 {date.posts?.map((post) => (

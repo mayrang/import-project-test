@@ -25,7 +25,6 @@ const ReservationAddModal = ({setShowModal}) => {
                             endDate={endTime}
                             timeInputLabel="Time :"
                             showTimeInput
-
                             minDate={new Date()}
                         />
                     </div>
