@@ -8,14 +8,14 @@ import ReservationAddModal from "./ReservationAddModal";
 import ScheduleAddModal from "./ScheduleAddModal";
 
 
-const ViewCalendar = ({calendarData, path, user}) => {
+const ViewCalendar = ({calendarData, path, user, posts, mutate}) => {
     const [reservationAddModal, setReservationAddmodal] = useState(false);
     const [scheduleAddModal, setScheduleAddModal] = useState(false);
     const router = useRouter();
     const {year, month} = router.query;
     const calendarYear = year||dayjs().format("YYYY");
     const calendarMonth = month||dayjs().format("MM");
-    console.log(calendarData)
+
    
 
     const clickNext = () => {
@@ -125,8 +125,8 @@ const ViewCalendar = ({calendarData, path, user}) => {
                 )}
             </div>   
         </div>
-        {reservationAddModal && <ReservationAddModal setShowModal={setReservationAddmodal} />}        
-        {scheduleAddModal && <ScheduleAddModal setShowModal={setScheduleAddModal} />}
+        {reservationAddModal && <ReservationAddModal setShowModal={setReservationAddmodal} user={user} posts={posts} mutate={mutate}/>}        
+        {scheduleAddModal && <ScheduleAddModal setShowModal={setScheduleAddModal}  user={user} posts={posts} mutate={mutate}/>}
 
         </>
     )

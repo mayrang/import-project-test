@@ -10,6 +10,7 @@ import authRoutes from "./routes/auth";
 import commentsRoutes from "./routes/comments";
 import applicationRoutes from "./routes/application";
 import adminRoutes from "./routes/admin";
+import reservationRoutes from "./routes/reservation";
 
 const app = express();
 
@@ -28,6 +29,7 @@ app.use("/api/posts", postsRoutes);
 app.use("/api/comments", commentsRoutes);
 app.use("/api/application", applicationRoutes);
 app.use("/api/admin", adminRoutes);
+app.use("/api/reservation", reservationRoutes);
 
 let port = 4000;
 

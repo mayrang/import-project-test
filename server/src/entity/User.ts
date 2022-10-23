@@ -6,6 +6,8 @@ import { ClubApplication } from "./ClubApplication";
 import { Project } from "./Project";
 import { Post } from "./Post";
 import { Comment } from "./Comment";
+import { Reservation } from "./Reservation";
+import { Schedule } from "./Schedule";
 
 @Entity("users")
 export class User extends BaseEntity {
@@ -60,4 +62,10 @@ export class User extends BaseEntity {
 
     @OneToMany(() => Comment, (comment) => comment.user, {cascade: true})
     comments: Comment[];
+
+    @OneToMany(() => Reservation, (reservation) => reservation.user, {cascade: true})
+    reservations: Reservation[];
+
+    @OneToMany(() => Schedule, (schedule) => schedule.user, {cascade: true})
+    schedules: Schedule[];
 }

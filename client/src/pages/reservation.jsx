@@ -4,16 +4,33 @@ import { setCalendarArray } from "../utils/Calendar";
 import dayjs from "dayjs";
 import ViewCalendar from "../components/ViewCalendar";
 import { useRouter } from "next/router";
+import useSWR from "swr";
 
-const Reservation = ({calendarData, user}) => {
+const Reservation = ({holidays, user}) => {
 
     const router = useRouter();
     const path = router.pathname;
+    const {year, month} = router.query;
+    let calendarData = [];
+    const fetcher = async (url) => {
+        try{
+            const result = await axios.get(url);
+            return result.data;
+        }catch(err){
+            throw err.response.data;
+        }
+    };
 
+    const {data:posts, mutate} = useSWR(`/reservation`, fetcher);
+
+    if(posts){
+        calendarData = setCalendarArray(parseInt(year)||dayjs().get("year"), parseInt(month)||dayjs().get("month")+1, holidays, posts)
+    }
+   
  
     return (
         <>
-        <ViewCalendar calendarData={calendarData} path={path} user={user}/>
+        <ViewCalendar calendarData={calendarData} path={path} user={user} posts={posts} mutate={mutate}/>
 
         </>
     );
@@ -34,7 +51,7 @@ export const getServerSideProps = async ({query, req}) => {
             });
             user = result.data || null;
         }
-
+    
         if(year&&month){
             if(year.match(/^[0-9]+$/) === null||month.match(/^[0-9]+$/) === null||parseInt(month)<0||parseInt(month)>13){
                 return {
@@ -45,38 +62,32 @@ export const getServerSideProps = async ({query, req}) => {
                 }
             }
             const calendarMonth = parseInt(month) < 10 ? "0"+month : month;
-            console.log(month)
             const result = await axios.get(`http://apis.data.go.kr/B090041/openapi/service/SpcdeInfoService/getHoliDeInfo?solYear=${year}&solMonth=${calendarMonth}&ServiceKey=${process.env.NEXT_PUBLIC_HOLIDAY_API_KEY}`)
             let holidays = result.data.response.body?.items?.item || [];
-            console.log(typeof(holidays))
             if(!Array.isArray(holidays)){
                 holidays = [holidays];
             }
-            console.log("holicay", holidays)
-            const calendarData = setCalendarArray(year, month, holidays)
+
             return {
                 props:{
-                    calendarData,
-                    user
+                    holidays,
+                    user, 
+
                 }
             } 
             
         }else{
-            console.log(dayjs().get("hour"))
-            const result = await axios.get(`http://apis.data.go.kr/B090041/openapi/service/SpcdeInfoService/getHoliDeInfo?solYear=${dayjs().get("year").toString()}&solMonth=${(dayjs().get("month")+1).toString()}&ServiceKey=${process.env.NEXT_PUBLIC_HOLIDAY_API_KEY}`);
-
+ 
+            const calendarMonth = dayjs().get("month")+1 < 10 ? "0"+month : (dayjs().get("month")+1).toString();
+            const result = await axios.get(`http://apis.data.go.kr/B090041/openapi/service/SpcdeInfoService/getHoliDeInfo?solYear=${dayjs().get("year").toString()}&solMonth=${calendarMonth}&ServiceKey=${process.env.NEXT_PUBLIC_HOLIDAY_API_KEY}`);
             let holidays = result.data.response.body?.items?.item || [];
             if(!Array.isArray(holidays)){
                 holidays = [holidays];
             }
-            console.log("holicay", holidays)
-           
-            const calendarData = setCalendarArray(2022, 10, holidays)
-
             return {
                 props:{
-                    calendarData,
-                    user
+                    holidays,
+                    user, 
                 }
             } 
             

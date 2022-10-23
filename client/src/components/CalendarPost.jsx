@@ -8,7 +8,7 @@ const CalendarPost = ({post}) => {
             <div 
                 className={cls("absolute w-full top-6 md:top-8 h-3.5 md:h-4  bg-blue-200 text-[10px] md:text-xs  overflow-hidden overflow-ellipsis whitespace-nowrap", {"rounded-lg":!post.multiple})}
             >
-                {!post.start || post.nickname|| post.content}
+                {!post.start || post.username|| post.content}
             </div>
         )
     }else if(post.index === 2){
@@ -16,7 +16,7 @@ const CalendarPost = ({post}) => {
             <div 
                 className={cls("absolute w-full top-11 md:top-14 h-3.5 md:h-4 bg-blue-200 text-[10px] md:text-xs  overflow-hidden overflow-ellipsis whitespace-nowrap", {"rounded-lg":!post.multiple})}
             >
-                {!post.start || post.nickname|| post.content}
+                {!post.start || post.username || post.content}
             </div>
         )
        
@@ -25,7 +25,7 @@ const CalendarPost = ({post}) => {
             <div 
                 className={cls("absolute w-full top-16 md:top-20 h-3.5 md:h-4 bg-blue-200 text-[10px] md:text-xs  overflow-hidden overflow-ellipsis whitespace-nowrap", {"rounded-lg":!post.multiple})}
             >
-                {!post.start|| post.nickname || post.content}
+                {!post.start|| post.username || post.content}
             </div>
         )
         

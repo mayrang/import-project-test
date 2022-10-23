@@ -52,7 +52,7 @@ const posts = [
   },
 ]
 
-export const setCalendarArray = (year, month, holidays) => {
+export const setCalendarArray = (year, month, holidays, posts) => {
     
     let monthArray = [];
     let weekArray = [];
@@ -92,7 +92,7 @@ export const setCalendarArray = (year, month, holidays) => {
       const dayFormat = year.toString() + (parseInt(month) < 10 ? "0"+month.toString() : month.toString()) + (i < 10 ? "0"+i.toString() : i.toString());
       const dayPosts = posts.filter((post) => (dayjs(post.startTime).format("YYYYMMDD") <= dayFormat)&&(dayFormat <= dayjs(post.endTime).format("YYYYMMDD")));
       let mapPosts = [];
-      
+ 
       //console.log("dayPost", dayPosts);
 
       // dayposts 정렬 1. 시작날짜순 2. 총 날짜 길이순
@@ -113,8 +113,7 @@ export const setCalendarArray = (year, month, holidays) => {
 
       });
 
-    
-      
+
       // 화면에 표시할 index
       let index = [1, 2, 3];
       for(const post of sortedPosts){
@@ -161,6 +160,7 @@ export const setCalendarArray = (year, month, holidays) => {
 
       }
 
+
       // 공휴일 여부 체크
       if(holidays){
         const holiday = holidays?.find((holiday) => holiday.locdate?.toString() === dayFormat);
@@ -197,7 +197,6 @@ export const setCalendarArray = (year, month, holidays) => {
       }
     }
 
- 
    
     return monthArray;
   };
