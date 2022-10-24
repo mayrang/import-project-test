@@ -4,14 +4,13 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { addDays } from "date-fns";
 import axios from "axios";
-import { useRouter } from "next/router";
 
 
 const ReservationAddModal = ({setShowModal, user, posts, mutate}) => {
     const [startTime, setStartTime] = useState(new Date());
     const [endTime, setEndTime] = useState(new Date());
     const [numberOfPeople, setNumberOfPeople] = useState("1");
-    const router = useRouter();
+ 
 
     const submitReservation = async () => {
         // 추가 검증 필요?

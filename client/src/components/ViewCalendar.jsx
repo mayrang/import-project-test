@@ -6,17 +6,22 @@ import dayjs from "dayjs";
 import { useState } from "react";
 import ReservationAddModal from "./ReservationAddModal";
 import ScheduleAddModal from "./ScheduleAddModal";
+import ReservationPostsModal from "./ReservationPostsModal";
+import SchedulePostsModal from "./SchedulePostsModal";
 
 
 const ViewCalendar = ({calendarData, path, user, posts, mutate}) => {
     const [reservationAddModal, setReservationAddmodal] = useState(false);
     const [scheduleAddModal, setScheduleAddModal] = useState(false);
+    const [reservationPostsModal, setReservationPostsModal] = useState(false);
+    const [schedulePostsModal, setSchedulePostsModal] = useState(false);
+    const [postDate, setPostDate] = useState({});
     const router = useRouter();
     const {year, month} = router.query;
     const calendarYear = year||dayjs().format("YYYY");
     const calendarMonth = month||dayjs().format("MM");
 
-   
+    console.log(calendarData)
 
     const clickNext = () => {
         if(parseInt(month) === 12){
@@ -72,6 +77,21 @@ const ViewCalendar = ({calendarData, path, user, posts, mutate}) => {
         }
     }
 
+    const clickPostsModal = (date) => {
+        if(date?.posts?.length > 0){
+            setPostDate(date);
+            if(path === "/reservation"){
+                setReservationPostsModal(true);
+            }else if(path === "/schedule"){
+                setSchedulePostsModal(true);
+            }else{
+                return;
+            }
+        }else{
+            return;
+        }
+    }
+
     return (
         <>
         <div className="w-full ">
@@ -94,7 +114,8 @@ const ViewCalendar = ({calendarData, path, user, posts, mutate}) => {
                    {calendarData?.map((week, idx) => (
                         <div key={idx} className="flex items-center w-full h-24 md:h-32">
                         {week.map((date, idx) => (
-                            <div key={idx} className="relative w-full h-full flex-1 border overflow-hidden overflow-ellipsis  whitespace-nowrap">
+                            <>
+                            <div key={idx} onClick={() => clickPostsModal(date)} className="relative w-full h-full flex-1 border overflow-hidden overflow-ellipsis  whitespace-nowrap">
                                 <small className={cls("text-xs ml-1 font-semibold  ", {"text-gray-300":date.type === "prev" || date.type === "next"}, {"text-red-500":date.holiday||idx % 7 === 0}, {" bg-blue-200 bg-rounded rounded-full ":date.dayFormat === dayjs().format("YYYYMMDD")})}>{date.date} </small>
                                 <small className="text-[10px] text-red-500">{date.holiday?.dateName}</small>
                                 
@@ -103,8 +124,10 @@ const ViewCalendar = ({calendarData, path, user, posts, mutate}) => {
                                 ))}
                                 {date.posts?.length > 0 &&<p className="absolute bottom-0 px-1  text-gray-400 text-[10px] md:text-xs">{date.posts?.length}개</p>}
                             </div>
+                            </>
                         ))}
                         </div>
+                        
                     ))}
                 </div>
                 {user&&
@@ -125,6 +148,8 @@ const ViewCalendar = ({calendarData, path, user, posts, mutate}) => {
                 )}
             </div>   
         </div>
+        {reservationPostsModal && <ReservationPostsModal postDate={postDate} setPostDate={setPostDate} mutate={mutate} user={user} setReservationPostsModal={setReservationPostsModal} setReservationAddmodal={setReservationAddmodal}/>}
+        {schedulePostsModal && <SchedulePostsModal postDate={postDate} setPostDate={setPostDate} mutate={mutate} user={user} setSchedulePostsModal={setSchedulePostsModal} setScheduleAddModal={setScheduleAddModal} />}
         {reservationAddModal && <ReservationAddModal setShowModal={setReservationAddmodal} user={user} posts={posts} mutate={mutate}/>}        
         {scheduleAddModal && <ScheduleAddModal setShowModal={setScheduleAddModal}  user={user}  mutate={mutate}/>}
 

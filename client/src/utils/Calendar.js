@@ -127,7 +127,7 @@ export const setCalendarArray = (year, month, holidays, posts) => {
         if(checkPost){
           
           
-          mapPost = {...post, start: false, multiple: true, index: checkPost.index, startTime: JSON.stringify(post.startTime), endTime: JSON.stringify(post.endTime)}
+          mapPost = {...post, start: false, multiple: true, index: checkPost.index, startTime: post.startTime, endTime: post.endTime}
           // 해당 index 필터링
           index = index.filter((num) => num !== checkPost.index)
           
@@ -138,20 +138,20 @@ export const setCalendarArray = (year, month, holidays, posts) => {
             // 시작날짜 포스트인지 체크
             if(dayFormat === dayjs(post.startTime).format("YYYYMMDD")){
               if(dayjs(post.startTime).format("YYYYMMDD") !== dayjs(post.endTime).format("YYYYMMDD")){
-                mapPost = {...post, start: true, multiple: true, index: index.shift(), startTime: JSON.stringify(post.startTime), endTime: JSON.stringify(post.endTime)}
+                mapPost = {...post, start: true, multiple: true, index: index.shift(), startTime:post.startTime, endTime: post.endTime}
                 
                 allPosts.push(mapPost)
               }else{
-                mapPost = {...post, start: true, multiple: false, index: index.shift(), startTime: JSON.stringify(post.startTime), endTime: JSON.stringify(post.endTime)}
+                mapPost = {...post, start: true, multiple: false, index: index.shift(), startTime: post.startTime, endTime: post.endTime}
                 allPosts.push(mapPost)
               }
             }else{
               //(아닐 시 다중날짜 포스트이면서 시작날짜 당시 화면 표시 X 였으므로 mapPosts에만 넣어줌)
-              mapPost = {...post, startTime: JSON.stringify(post.startTime), endTime: JSON.stringify(post.endTime)}
+              mapPost = {...post, startTime: post.startTime, endTime: post.endTime}
             }
           }else{
             // 남아있는 index가 없으므로 mapPosts에만 넣어줌
-            mapPost = {...post, startTime: JSON.stringify(post.startTime), endTime: JSON.stringify(post.endTime)}
+            mapPost = {...post, startTime: post.startTime, endTime: post.endTime}
           }
         }
         
