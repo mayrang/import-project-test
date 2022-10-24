@@ -31,6 +31,12 @@ const ScheduleAddModal = ({setShowModal, user, mutate}) => {
     return (
         <div className="h-screen w-full fixed left-0 top-0 flex justify-center items-center bg-black bg-opacity-40 text-center">
             <div className="bg-white rounded w-10/12">
+                <div class="flex justify-between items-start p-4 border-b ">
+                    <h3 class="text-xl font-semibold text-gray-900">
+                        일정등록
+                    </h3>
+                    
+                </div>
                 <div className="border-b px-4 py-2 flex-col text-left items-center">
                     <div className="flex-col  items-center">
                         <div className="mr-3">
