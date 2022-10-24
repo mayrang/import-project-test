@@ -126,7 +126,7 @@ const ViewCalendar = ({calendarData, path, user, posts, mutate}) => {
             </div>   
         </div>
         {reservationAddModal && <ReservationAddModal setShowModal={setReservationAddmodal} user={user} posts={posts} mutate={mutate}/>}        
-        {scheduleAddModal && <ScheduleAddModal setShowModal={setScheduleAddModal}  user={user} posts={posts} mutate={mutate}/>}
+        {scheduleAddModal && <ScheduleAddModal setShowModal={setScheduleAddModal}  user={user}  mutate={mutate}/>}
 
         </>
     )

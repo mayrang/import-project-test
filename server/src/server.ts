@@ -11,6 +11,7 @@ import commentsRoutes from "./routes/comments";
 import applicationRoutes from "./routes/application";
 import adminRoutes from "./routes/admin";
 import reservationRoutes from "./routes/reservation";
+import scheduleRoutes from "./routes/schedule";
 
 const app = express();
 
@@ -30,6 +31,7 @@ app.use("/api/comments", commentsRoutes);
 app.use("/api/application", applicationRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/reservation", reservationRoutes);
+app.use("/api/schedule", scheduleRoutes);
 
 let port = 4000;
 

@@ -47,7 +47,7 @@ const ReservationAddModal = ({setShowModal, user, posts, mutate}) => {
         <div className="h-screen w-full fixed left-0 top-0 flex justify-center items-center bg-black bg-opacity-40 text-center">
         <div className="bg-white rounded md:w-4/12 w-9/12">
             <div className="border-b px-4 py-2 flex-col text-left items-center">
-                <div className="flex-col  itmes-center  ">
+                <div className="flex-col  items-center  ">
                     <div className="mr-3">
                         <label htmlFor="startTime" className="font-semibold mb-2">Start Time</label>
                         <DatePicker
