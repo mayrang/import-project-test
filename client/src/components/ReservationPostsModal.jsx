@@ -1,20 +1,30 @@
 import dayjs from "dayjs";
 import React from "react";
 
-const ReservationPostsModal = ({postDate, setPostDate, user, mutate, setReservationPostsModal, setReservationAddModal}) => {
+const ReservationPostsModal = ({setModalPost, modalDate, setModalDate, user, mutate, setReservationPostsModal, setReservationAddModal}) => {
     // 각 날짜의 포스트 시작시간순으로 배열
-    const sortedPosts = postDate?.posts?.sort((a, b) => new Date(a.startTime) - new Date(b.startTime));
-    console.log(sortedPosts)
+    const sortedPosts = modalDate?.posts?.sort((a, b) => new Date(a.startTime) - new Date(b.startTime));
+    console.log(setReservationAddModal)
     const closePostsModal = () => {
-        setPostDate({});
+        setModalDate({});
         setReservationPostsModal(false);
+        setModalPost({});
+    };
+
+    const clickEdit = (post) => {
+        setModalDate({});
+        setModalPost(post);
+        setReservationPostsModal(false);
+        setReservationAddModal(true);
+        
     }
+
     return (
         <div className="h-screen w-full fixed left-0 top-0 flex justify-center items-center bg-black bg-opacity-40 text-center">
         <div className="bg-white rounded w-10/12">
             <div className="flex justify-between items-start p-4 border-b ">
                 <h3 className="text-xl font-semibold text-gray-900">
-                    {postDate.date}일
+                    {modalDate.date}일
                 </h3>   
             </div>
             <div className="border-b px-4 py-2 flex-col text-left items-center">                  
@@ -33,7 +43,7 @@ const ReservationPostsModal = ({postDate, setPostDate, user, mutate, setReservat
                         <div className="p-2 flex-col md:flex items-center">
                             {post.userId === user.userId && (
                                 <>
-                                <button className="p-2 border rounded bg-white border-green-500 hover:bg-green-500 hover:text-white">수정</button>
+                                <button onClick={() => clickEdit(post)} className="p-2 border rounded bg-white border-green-500 hover:bg-green-500 hover:text-white">수정</button>
                                 <button className="mt-1 md:ml-2 p-2 border rounded bg-white border-red-500 hover:bg-red-500 hover:text-white">삭제</button>
                                 </>
                           

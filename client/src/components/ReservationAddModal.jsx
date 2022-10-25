@@ -6,10 +6,10 @@ import { addDays } from "date-fns";
 import axios from "axios";
 
 
-const ReservationAddModal = ({setShowModal, user, posts, mutate}) => {
-    const [startTime, setStartTime] = useState(new Date());
-    const [endTime, setEndTime] = useState(new Date());
-    const [numberOfPeople, setNumberOfPeople] = useState("1");
+const ReservationAddModal = ({modalPost, setModalPost,  setReservationAddModal, user, posts, mutate}) => {
+    const [startTime, setStartTime] = useState((modalPost?.startTime && new Date(modalPost?.startTime)) || new Date());
+    const [endTime, setEndTime] = useState((modalPost?.endTime && new Date(modalPost?.endTime)) ||new Date());
+    const [numberOfPeople, setNumberOfPeople] = useState(modalPost?.numberOfPeople || "1");
  
 
     const submitReservation = async () => {
@@ -28,7 +28,8 @@ const ReservationAddModal = ({setShowModal, user, posts, mutate}) => {
                     username: user.nickname
                 });
                 mutate();
-                setShowModal(false);
+                setReservationAddModal(false);
+                setModalPost({});
                 
             }catch(err){
                 console.log(err);
@@ -40,6 +41,11 @@ const ReservationAddModal = ({setShowModal, user, posts, mutate}) => {
             return;
         }
         
+    }
+
+    const closeAddModal = () => {
+        setReservationAddModal(false);
+        setModalPost({});
     }
 
     return (
@@ -118,7 +124,7 @@ const ReservationAddModal = ({setShowModal, user, posts, mutate}) => {
                     <button onClick={submitReservation} className="bg-white border border-blue-500 hover:bg-blue-500 hover:text-white rounded p-2">등록</button>
                 </div>
                 <div>
-                    <button onClick={() => setShowModal(false)} className="bg-gray-200 border hover:text-white rounded p-2">닫기</button>
+                    <button onClick={closeAddModal} className="bg-gray-200 border hover:text-white rounded p-2">닫기</button>
                 </div>
             </div>
         </div>

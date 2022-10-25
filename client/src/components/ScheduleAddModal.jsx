@@ -3,10 +3,10 @@ import React, { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-const ScheduleAddModal = ({setShowModal, user, mutate}) => {
-    const [startTime, setStartTime] = useState(new Date());
-    const [endTime, setEndTime] = useState(new Date());
-    const [content, setContent] = useState("");
+const ScheduleAddModal = ({modalPost, setModalPost, setScheduleAddModal, user, mutate}) => {
+    const [startTime, setStartTime] = useState((modalPost?.startTime && new Date(modalPost?.startTime)) || new Date());
+    const [endTime, setEndTime] = useState((modalPost?.startTime && new Date(modalPost?.startTime)) || new Date());
+    const [content, setContent] = useState(modalPost?.content || "");
 
     const submitSchedule = async () => {
         try{
@@ -20,12 +20,17 @@ const ScheduleAddModal = ({setShowModal, user, mutate}) => {
                 content
             });
             mutate();
-            setShowModal(false);
+            setScheduleAddModal(false);
+            setModalPost({});
 
 
         }catch(err){
 
         }
+    }
+
+    const closeAddModal = () => {
+        setScheduleAddModal(false)
     }
 
     return (
@@ -85,7 +90,7 @@ const ScheduleAddModal = ({setShowModal, user, mutate}) => {
                         <button onClick={submitSchedule} className="bg-white border border-blue-500 hover:bg-blue-500 hover:text-white rounded p-2">등록</button>
                     </div>
                     <div>
-                        <button onClick={() => setShowModal(false)} className="bg-gray-200 border hover:text-white rounded p-2">닫기</button>
+                        <button onClick={closeAddModal} className="bg-gray-200 border hover:text-white rounded p-2">닫기</button>
                     </div>
                 </div>
             </div>

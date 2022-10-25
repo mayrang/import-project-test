@@ -66,7 +66,7 @@ export const getServerSideProps = async ({query, req}) => {
             }
             const calendarMonth = parseInt(month) < 10 ? "0"+month : month;
             const result = await axios.get(`http://apis.data.go.kr/B090041/openapi/service/SpcdeInfoService/getHoliDeInfo?solYear=${year}&solMonth=${calendarMonth}&ServiceKey=${process.env.NEXT_PUBLIC_HOLIDAY_API_KEY}`)
-            let holidays = result.data.response.body?.items?.item || [];
+            let holidays = result.data.response?.body?.items?.item || [];
             if(!Array.isArray(holidays)){
                 holidays = [holidays];
             }
@@ -83,7 +83,8 @@ export const getServerSideProps = async ({query, req}) => {
  
             const calendarMonth = dayjs().get("month")+1 < 10 ? "0"+month : (dayjs().get("month")+1).toString();
             const result = await axios.get(`http://apis.data.go.kr/B090041/openapi/service/SpcdeInfoService/getHoliDeInfo?solYear=${dayjs().get("year").toString()}&solMonth=${calendarMonth}&ServiceKey=${process.env.NEXT_PUBLIC_HOLIDAY_API_KEY}`);
-            let holidays = result.data.response.body?.items?.item || [];
+            console.log(result.data)
+            let holidays = result.data.response?.body?.items?.item || [];
             if(!Array.isArray(holidays)){
                 holidays = [holidays];
             }

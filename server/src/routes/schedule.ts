@@ -8,6 +8,7 @@ const router = Router();
 router.get("/", async (_:Request, res:Response) => {
     try{
         const schedules = await Schedule.find();
+        console.log(schedules)
         return res.status(200).json(schedules);
     }catch(err){
         console.log(err);
