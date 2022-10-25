@@ -1,5 +1,6 @@
 import React from "react";
 import dayjs from "dayjs";
+import axios from "axios";
 
 const SchedulePostsModal = ({modalDate, setModalDate, setModalPost, user, mutate, setSchedulePostsModal, setScheduleAddModal, }) => {
 
@@ -16,6 +17,20 @@ const SchedulePostsModal = ({modalDate, setModalDate, setModalPost, user, mutate
         setSchedulePostsModal(false);
         setScheduleAddModal(true);
         
+    };
+
+    const clickRemove = async (post) => {
+        if(user.userId !== post.userId) return alert("삭제 권한이 없습니다.");
+        try{
+            await axios.delete(`/schedule/post/${post.calendarId}`);
+            mutate();
+            setModalDate({});
+            setModalPost({});
+            setSchedulePostsModal(false);
+        }catch(err){
+            console.log(err);
+            alert(err.response?.data?.error || err.response?.data || "errer");
+        }
     }
 
     return (
@@ -43,7 +58,7 @@ const SchedulePostsModal = ({modalDate, setModalDate, setModalPost, user, mutate
                             {post.userId === user.userId && (
                                 <>
                                 <button onClick={() => clickEdit(post)} className="p-2 border rounded bg-white border-green-500 hover:bg-green-500 hover:text-white">수정</button>
-                                <button className="mt-1 md:ml-2 p-2 border rounded bg-white border-red-500 hover:bg-red-500 hover:text-white">삭제</button>
+                                <button onClick={() => clickRemove(post)} className="mt-1 md:ml-2 p-2 border rounded bg-white border-red-500 hover:bg-red-500 hover:text-white">삭제</button>
                                 </>
                           
                             )}

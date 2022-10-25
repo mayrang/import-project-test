@@ -6,6 +6,7 @@ import { addDays } from "date-fns";
 import axios from "axios";
 
 
+
 const ReservationAddModal = ({modalPost, setModalPost,  setReservationAddModal, user, posts, mutate}) => {
     const [startTime, setStartTime] = useState((modalPost?.startTime && new Date(modalPost?.startTime)) || new Date());
     const [endTime, setEndTime] = useState((modalPost?.endTime && new Date(modalPost?.endTime)) ||new Date());
@@ -14,32 +15,40 @@ const ReservationAddModal = ({modalPost, setModalPost,  setReservationAddModal, 
 
     const submitReservation = async () => {
         // 추가 검증 필요?
-        if(user){
+            
+        try{
+            if((!user)||Object.keys(user).length === 0) return alert("로그인된 유저만 등록 가능합니다.");
             if(endTime < startTime) return alert("시간 역전 안돼!!!");
-
+            if(startTime < new Date()) return alert("지난시간에는 예약할 수 없습니다.");
             const checkReservation = posts.filter((it) => ((startTime >= new Date(it.startTime)) && (startTime <= new Date(it.endTime)) || (endTime >= new Date(it.startTime)) && (endTime <= new Date(it.endTime))));
             console.log(checkReservation)
             if(checkReservation.length > 0) return alert("겹치는 예약이 있습니다!");
-            try{
+            if(Object.keys(modalPost).length > 0){
+                await axios.patch(`/reservation/post/${modalPost.calendarId}`, {
+                    startTime,
+                    endTime,
+                    numberOfPeople: parseInt(numberOfPeople),
+                    username: user.nickname
+                });
+            }else{
                 await axios.post("/reservation/post", {
                     startTime,
                     endTime,
                     numberOfPeople: parseInt(numberOfPeople),
                     username: user.nickname
                 });
-                mutate();
-                setReservationAddModal(false);
-                setModalPost({});
-                
-            }catch(err){
-                console.log(err);
-                alert(err.response?.data?.error || err.response?.data || "errer");
             }
             
-
-        }else{
-            return;
+            mutate();
+            setReservationAddModal(false);
+            setModalPost({});
+            
+        }catch(err){
+            console.log(err);
+            alert(err.response?.data?.error || err.response?.data || "errer");
         }
+            
+
         
     }
 
@@ -51,8 +60,8 @@ const ReservationAddModal = ({modalPost, setModalPost,  setReservationAddModal, 
     return (
         <div className="h-screen w-full fixed left-0 top-0 flex justify-center items-center bg-black bg-opacity-40 text-center">
         <div className="bg-white rounded md:w-4/12 w-9/12">
-            <div class="flex justify-between items-start p-4 border-b ">
-                <h3 class="text-xl font-semibold text-gray-900">
+            <div className="flex justify-between items-start p-4 border-b ">
+                <h3 className="text-xl font-semibold text-gray-900">
                     예약하기
                 </h3>
                 

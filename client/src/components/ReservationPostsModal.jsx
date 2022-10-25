@@ -1,3 +1,4 @@
+import axios from "axios";
 import dayjs from "dayjs";
 import React from "react";
 
@@ -18,6 +19,21 @@ const ReservationPostsModal = ({setModalPost, modalDate, setModalDate, user, mut
         setReservationAddModal(true);
         
     }
+
+    const clickRemove = async (post) => {
+        if(user.userId !== post.userId) return alert("삭제 권한이 없습니다.");
+        try{
+            await axios.delete(`/reservation/post/${post.calendarId}`);
+            setModalDate({});
+            setModalPost({});
+            setReservationPostsModal(false);
+            mutate();
+        }catch(err){
+            console.log(err);
+            alert(err.response?.data?.error || err.response?.data || "errer");
+        }
+    }
+
 
     return (
         <div className="h-screen w-full fixed left-0 top-0 flex justify-center items-center bg-black bg-opacity-40 text-center">
@@ -44,7 +60,7 @@ const ReservationPostsModal = ({setModalPost, modalDate, setModalDate, user, mut
                             {post.userId === user.userId && (
                                 <>
                                 <button onClick={() => clickEdit(post)} className="p-2 border rounded bg-white border-green-500 hover:bg-green-500 hover:text-white">수정</button>
-                                <button className="mt-1 md:ml-2 p-2 border rounded bg-white border-red-500 hover:bg-red-500 hover:text-white">삭제</button>
+                                <button onClick={() => clickRemove(post)} className="mt-1 md:ml-2 p-2 border rounded bg-white border-red-500 hover:bg-red-500 hover:text-white">삭제</button>
                                 </>
                           
                             )}

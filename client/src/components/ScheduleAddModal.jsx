@@ -5,7 +5,7 @@ import "react-datepicker/dist/react-datepicker.css";
 
 const ScheduleAddModal = ({modalPost, setModalPost, setScheduleAddModal, user, mutate}) => {
     const [startTime, setStartTime] = useState((modalPost?.startTime && new Date(modalPost?.startTime)) || new Date());
-    const [endTime, setEndTime] = useState((modalPost?.startTime && new Date(modalPost?.startTime)) || new Date());
+    const [endTime, setEndTime] = useState((modalPost?.startTime && new Date(modalPost?.endTime)) || new Date());
     const [content, setContent] = useState(modalPost?.content || "");
 
     const submitSchedule = async () => {
@@ -14,18 +14,28 @@ const ScheduleAddModal = ({modalPost, setModalPost, setScheduleAddModal, user, m
             if((!user)||Object.keys(user).length === 0) return alert("로그인된 유저만 등록 가능합니다.");
             if(endTime < startTime) return alert("시간 역전 안돼!!!");
             if(content.trim() === "") return alert("일정 내용을 채워주세요");
-            await axios.post("/schedule/post", {
-                startTime,
-                endTime,
-                content
-            });
+            if(Object.keys(modalPost).length > 0){
+                await axios.patch(`/schedule/post/${modalPost.calendarId}`, {
+                    startTime,
+                    endTime,
+                    content
+                })
+            }else{
+                await axios.post("/schedule/post", {
+                    startTime,
+                    endTime,
+                    content
+                });
+            }
+           
             mutate();
             setScheduleAddModal(false);
             setModalPost({});
 
 
         }catch(err){
-
+            console.log(err);
+            alert(err.response?.data?.error || err.response?.data || "errer");
         }
     }
 
@@ -36,8 +46,8 @@ const ScheduleAddModal = ({modalPost, setModalPost, setScheduleAddModal, user, m
     return (
         <div className="h-screen w-full fixed left-0 top-0 flex justify-center items-center bg-black bg-opacity-40 text-center">
             <div className="bg-white rounded w-10/12">
-                <div class="flex justify-between items-start p-4 border-b ">
-                    <h3 class="text-xl font-semibold text-gray-900">
+                <div className="flex justify-between items-start p-4 border-b ">
+                    <h3 className="text-xl font-semibold text-gray-900">
                         일정등록
                     </h3>
                     
