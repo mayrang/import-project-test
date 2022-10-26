@@ -6,6 +6,8 @@ import ViewCalendar from "../components/ViewCalendar";
 import { useRouter } from "next/router";
 import useSWR from "swr";
 
+
+// pages/reservation.jsx 파일과 거의 동일 해당 주석 참고
 const Schedule = ({holidays, user}) => {
 
     const router = useRouter();

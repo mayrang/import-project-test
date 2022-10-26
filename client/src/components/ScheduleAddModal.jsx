@@ -4,16 +4,23 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 const ScheduleAddModal = ({modalPost, setModalPost, setScheduleAddModal, user, mutate}) => {
+    // modalPost가 있으면 기본값으로 설정
+    // 시작, 끝 시간 state
     const [startTime, setStartTime] = useState((modalPost?.startTime && new Date(modalPost?.startTime)) || new Date());
     const [endTime, setEndTime] = useState((modalPost?.startTime && new Date(modalPost?.endTime)) || new Date());
+    // 일정 내용
     const [content, setContent] = useState(modalPost?.content || "");
 
     const submitSchedule = async () => {
         try{
             console.log(user)
+            // 로그인 여부
             if((!user)||Object.keys(user).length === 0) return alert("로그인된 유저만 등록 가능합니다.");
+            // 시간 역전 여부
             if(endTime < startTime) return alert("시간 역전 안돼!!!");
+            // content의 값이 있는지
             if(content.trim() === "") return alert("일정 내용을 채워주세요");
+            // 수정인지 최초등록인지 체크
             if(Object.keys(modalPost).length > 0){
                 await axios.patch(`/schedule/post/${modalPost.calendarId}`, {
                     startTime,
@@ -27,8 +34,9 @@ const ScheduleAddModal = ({modalPost, setModalPost, setScheduleAddModal, user, m
                     content
                 });
             }
-           
+            // post 갱신
             mutate();
+            // modal 창 닫기
             setScheduleAddModal(false);
             setModalPost({});
 
@@ -38,24 +46,29 @@ const ScheduleAddModal = ({modalPost, setModalPost, setScheduleAddModal, user, m
             alert(err.response?.data?.error || err.response?.data || "errer");
         }
     }
-
+    // modal 창 닫기
     const closeAddModal = () => {
         setScheduleAddModal(false)
     }
 
     return (
+        // 배경
         <div className="h-screen w-full fixed left-0 top-0 flex justify-center items-center bg-black bg-opacity-40 text-center">
+            {/* modal */}
             <div className="bg-white rounded w-10/12">
+                {/* modal header */}
                 <div className="flex justify-between items-start p-4 border-b ">
                     <h3 className="text-xl font-semibold text-gray-900">
                         일정등록
                     </h3>
                     
                 </div>
+                {/* modal main */}
                 <div className="border-b px-4 py-2 flex-col text-left items-center">
                     <div className="flex-col  items-center">
                         <div className="mr-3">
                             <label htmlFor="startTime" className="font-semibold mb-2">Start Time</label>
+                            {/* 시작 시간(현재시간 이후 선택가능, time은 30분 단위) */}
                             <DatePicker
                                 id="startTime"
                                 selected={startTime}
@@ -72,6 +85,7 @@ const ScheduleAddModal = ({modalPost, setModalPost, setScheduleAddModal, user, m
                         </div>
                         <div>
                             <label htmlFor="endTime" className="font-semibold mb-2">End Time</label>
+                            {/* 끝 시간 */}
                             <DatePicker
                                 id="endTime"
                                 selected={endTime}
@@ -87,6 +101,7 @@ const ScheduleAddModal = ({modalPost, setModalPost, setScheduleAddModal, user, m
                         </div>
 
                     </div>
+                    {/* content */}
                     <div className="py-2 ">
                         <label htmlFor="content" className="font-semibold mb-2 ">일정 내용</label>
                         <br/>
