@@ -58,6 +58,7 @@ const AdminPage = ({path}) => {
                         )}
                             <th>직급</th>
                             <th>이름</th>
+                            <th className="hidden md:table-cell mr-2">학번</th>
                             <th className="hidden md:table-cell mr-2">희망 분야</th>
                             <th className="hidden md:table-cell mr-2">희망 직군</th>
                             <th className="hidden lg:table-cell mr-2">이메일</th>

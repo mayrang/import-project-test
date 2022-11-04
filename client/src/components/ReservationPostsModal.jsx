@@ -5,6 +5,7 @@ import React from "react";
 const ReservationPostsModal = ({setModalPost, modalDate, setModalDate, user, mutate, setReservationPostsModal, setReservationAddModal}) => {
     // 각 날짜의 포스트 시작시간순으로 배열
     const sortedPosts = modalDate?.posts?.sort((a, b) => new Date(a.startTime) - new Date(b.startTime));
+
     // modal 닫기
     const closePostsModal = () => {
         setModalDate({});

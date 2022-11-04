@@ -9,6 +9,7 @@ import HomePageMemberModal from "./HomePageMemberModal";
  * 
  * */  
 const AdminCard = ({data, path, mutate, setUserIdArray}) => {
+    console.log(data);
     // modal state
     const [showModal, setShowModal] = useState(false);
 
@@ -39,6 +40,7 @@ const AdminCard = ({data, path, mutate, setUserIdArray}) => {
             <td>{data.level}</td>
             <td>{data.nickname}</td>
             {/* 반응형 디자인 */}
+            <td className="hidden md:table-cell">{data.studentId || "-"}</td>
             <td className="hidden md:table-cell ">{data.fieldOfHope}</td>
             <td className="hidden md:table-cell">{data.jobObjective}</td>
             <td className="hidden lg:table-cell">{data.email}</td>
