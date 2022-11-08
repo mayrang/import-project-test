@@ -1,10 +1,13 @@
 import React from "react";
 import dayjs from "dayjs";
 import axios from "axios";
+import { useSelector } from "react-redux";
 
-const SchedulePostsModal = ({modalDate, setModalDate, setModalPost, user, mutate, setSchedulePostsModal, setScheduleAddModal, }) => {
+const SchedulePostsModal = ({modalDate, setModalDate, setModalPost, mutate, setSchedulePostsModal, setScheduleAddModal, }) => {
     // 각 날짜 포스트 시간 순으로 배열
     const sortedPosts = modalDate?.posts.sort((a, b) => new Date(a.startTime) - new Date(b.startTime));
+
+    const {user} = useSelector((state) => state.user);
 
     // modal 창 닫기
     const closePostsModal = () => {

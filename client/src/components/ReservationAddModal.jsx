@@ -4,10 +4,11 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { addDays } from "date-fns";
 import axios from "axios";
+import { useSelector } from "react-redux";
 
 
 
-const ReservationAddModal = ({modalPost, setModalPost,  setReservationAddModal, user, posts, mutate}) => {
+const ReservationAddModal = ({modalPost, setModalPost,  setReservationAddModal,  posts, mutate}) => {
         // modalPost가 있으면 기본값으로 설정
     // 시작, 끝 시간 state
     const [startTime, setStartTime] = useState((modalPost?.startTime && new Date(modalPost?.startTime)) || new Date());
@@ -15,6 +16,7 @@ const ReservationAddModal = ({modalPost, setModalPost,  setReservationAddModal, 
     // 인원 수 state
     const [numberOfPeople, setNumberOfPeople] = useState(modalPost?.numberOfPeople || "1");
  
+    const {user} = useSelector((state) => state.user);
 
     const submitReservation = async () => {
         // 추가 검증 필요?

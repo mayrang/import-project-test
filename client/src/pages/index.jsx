@@ -77,8 +77,9 @@ export default function Home() {
 export const getServerSideProps = wrapper.getServerSideProps((store) => async ({req}) => {
   try{
     const cookie = req.headers.cookie;
-    if(!cookie) throw new Error("쿠키 정보가 없습니다.");
-    await store.dispatch(asyncUserLoadMyInfo(cookie));
+    if(cookie){
+      await store.dispatch(asyncUserLoadMyInfo(cookie));
+    }
     return {
       props: {}
     }

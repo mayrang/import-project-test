@@ -5,10 +5,12 @@ import dayjs from "dayjs";
 import ViewCalendar from "../components/ViewCalendar";
 import { useRouter } from "next/router";
 import useSWR from "swr";
+import wrapper from "../redux/store";
+import { asyncUserLoadMyInfo } from "../redux/reducers/UserSlice";
 
 
 // pages/reservation.jsx 파일과 거의 동일 해당 주석 참고
-const Schedule = ({holidays, user}) => {
+const Schedule = ({holidays}) => {
 
     const router = useRouter();
     const path = router.pathname;
@@ -31,10 +33,10 @@ const Schedule = ({holidays, user}) => {
     }
    
     
-    console.log(user)
+ 
     return (
         <>
-        <ViewCalendar calendarData={calendarData} user={user} path={path} mutate={mutate}/>
+        <ViewCalendar calendarData={calendarData}  path={path} mutate={mutate}/>
         
   
         </>
@@ -43,18 +45,13 @@ const Schedule = ({holidays, user}) => {
 
 export default Schedule;
 
-export const getServerSideProps = async ({query, req}) => {
+export const getServerSideProps = wrapper.getServerSideProps((store) => async ({query, req}) => {
     try{
         const {year, month} = query;
         const cookie = req.headers.cookie;
-        let user = null;
+
         if(cookie){
-            const result = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/api/auth/me`, {
-                headers: {
-                    cookie,
-                }
-            });
-            user = result.data || null;
+            store.dispatch(asyncUserLoadMyInfo(cookie));
         }
     
         if(year&&month){
@@ -76,7 +73,7 @@ export const getServerSideProps = async ({query, req}) => {
             return {
                 props:{
                     holidays,
-                    user, 
+                   
 
                 }
             } 
@@ -93,7 +90,7 @@ export const getServerSideProps = async ({query, req}) => {
             return {
                 props:{
                     holidays,
-                    user, 
+                   
                 }
             } 
             
@@ -106,4 +103,4 @@ export const getServerSideProps = async ({query, req}) => {
             props: {}
         }
     }
-}
+}) 

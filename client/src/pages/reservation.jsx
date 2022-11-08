@@ -5,9 +5,11 @@ import dayjs from "dayjs";
 import ViewCalendar from "../components/ViewCalendar";
 import { useRouter } from "next/router";
 import useSWR from "swr";
+import wrapper from "../redux/store";
+import { asyncUserLoadMyInfo } from "../redux/reducers/UserSlice";
 
-const Reservation = ({holidays, user}) => {
-
+const Reservation = ({holidays}) => {
+    
     const router = useRouter();
     // path값으로 schedule인지 reservation인지 구분
     const path = router.pathname;
@@ -34,7 +36,7 @@ const Reservation = ({holidays, user}) => {
     return (
         <>
         {/* ViewCalendar 컴포넌트에 넘겨주기 */}
-        <ViewCalendar calendarData={calendarData} path={path} user={user} posts={posts} mutate={mutate}/>
+        <ViewCalendar calendarData={calendarData} path={path} posts={posts} mutate={mutate}/>
 
         </>
     );
@@ -44,20 +46,14 @@ export default Reservation;
 
 
 // 
-export const getServerSideProps = async ({query, req}) => {
+export const getServerSideProps = wrapper.getServerSideProps((store) => async ({query, req}) => {
     try{
         const {year, month} = query;
 
         // 가지고 있는 쿠키값을 바탕으로 서버에 로그인 여부를 확인
         const cookie = req.headers.cookie;
-        let user = null;
         if(cookie){
-            const result = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/api/auth/me`, {
-                headers: {
-                    cookie,
-                }
-            });
-            user = result.data || null;
+            await store.dispatch(asyncUserLoadMyInfo(cookie));
         }
         // year, month가 url에 있으면 
         if(year&&month){
@@ -83,8 +79,7 @@ export const getServerSideProps = async ({query, req}) => {
             return {
                 props:{
                     holidays,
-                    user, 
-
+                    
                 }
             } 
             
@@ -99,7 +94,7 @@ export const getServerSideProps = async ({query, req}) => {
             return {
                 props:{
                     holidays,
-                    user, 
+                    
                 }
             } 
             
@@ -112,4 +107,4 @@ export const getServerSideProps = async ({query, req}) => {
             props: {}
         }
     }
-}
+});

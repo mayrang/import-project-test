@@ -2,14 +2,17 @@ import React from "react";
 import dayjs from "dayjs";
 import axios from "axios";
 import { useState } from "react";
+import { useSelector } from "react-redux";
 
 
 
-const Comment = ({comment, user, mutate}) => {
+const Comment = ({comment,  mutate}) => {
     // 댓글이 수정중인지 체크하는 state
     const [isEdit, setIsEdit] = useState(false);
     // 댓글 수정 state
     const [editComment, setEditComment] = useState(comment.comment || "")
+
+    const {user} = useSelector((state) => state.user);
 
     //댓글 삭제, api명세서에 따라 추후 변경 필요
     const clickRemove = async (commentId) => {

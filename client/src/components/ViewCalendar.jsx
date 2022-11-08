@@ -8,9 +8,10 @@ import ReservationAddModal from "./ReservationAddModal";
 import ScheduleAddModal from "./ScheduleAddModal";
 import ReservationPostsModal from "./ReservationPostsModal";
 import SchedulePostsModal from "./SchedulePostsModal";
+import { useSelector } from "react-redux";
 
 
-const ViewCalendar = ({calendarData, path, user, posts, mutate}) => {
+const ViewCalendar = ({calendarData, path, posts, mutate}) => {
     // 예약 추가 or 일정 추가 modal을 컨트롤 하기 위한 state
     const [reservationAddModal, setReservationAddmodal] = useState(false);
     const [scheduleAddModal, setScheduleAddModal] = useState(false);
@@ -26,7 +27,7 @@ const ViewCalendar = ({calendarData, path, user, posts, mutate}) => {
     // 년도와 월을 표시하기 위한 변수
     const calendarYear = year||dayjs().format("YYYY");
     const calendarMonth = month||dayjs().format("MM");
-    
+    const {user} = useSelector((state) => state.user);
     // 다음 달
     const clickNext = () => {
         if(parseInt(month) === 12){

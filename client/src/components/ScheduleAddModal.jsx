@@ -2,14 +2,17 @@ import axios from "axios";
 import React, { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { useSelector } from "react-redux";
 
-const ScheduleAddModal = ({modalPost, setModalPost, setScheduleAddModal, user, mutate}) => {
+const ScheduleAddModal = ({modalPost, setModalPost, setScheduleAddModal,  mutate}) => {
     // modalPost가 있으면 기본값으로 설정
     // 시작, 끝 시간 state
     const [startTime, setStartTime] = useState((modalPost?.startTime && new Date(modalPost?.startTime)) || new Date());
     const [endTime, setEndTime] = useState((modalPost?.startTime && new Date(modalPost?.endTime)) || new Date());
     // 일정 내용
     const [content, setContent] = useState(modalPost?.content || "");
+
+    const {user} = useSelector((state) => state.user);
 
     const submitSchedule = async () => {
         try{

@@ -5,11 +5,12 @@ import toast from "react-hot-toast";
 import dayjs from "dayjs";
 import useSWR from "swr"
 import Comment from "./Comment";
+import { useSelector } from "react-redux";
 
 
-const PostPage = ({user, path}) => {
+const PostPage = ({ path}) => {
     const router = useRouter();
-    
+    const {user} = useSelector((state) => state.user);
 
     const fetcher = async (url) => {
         try{
@@ -112,7 +113,7 @@ const PostPage = ({user, path}) => {
                             }else{
                                 return (
                                     // 댓글과 유저 정보 그리고 삭제 혹은 수정시 갱신되도록 mutate함수 props
-                                    <Comment comment={comment} key={comment.commentId} user={user} mutate={mutate}/>
+                                    <Comment comment={comment} key={comment.commentId} mutate={mutate}/>
                                 )
                             }
                         })}
