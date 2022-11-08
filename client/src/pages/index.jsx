@@ -1,18 +1,32 @@
 import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import ViewCalendar from "../components/ViewCalendar";
+import { asyncUserLoadMyInfo, asyncUserLogout } from "../redux/reducers/UserSlice";
+import wrapper from "../redux/store";
 
-export default function Home({user}) {
+export default function Home() {
   const router = useRouter();
-  const clickLogout = async () => {
-    try{
-      await axios.get("/auth/logout");
-      router.reload();
-    }catch(err){
-      console.log(err);
-    }
+  const dispatch = useDispatch();
+  const {user, logoutDone, logoutError} = useSelector((state) => state.user);
+  console.log(user)
+  const clickLogout =  () => {
+    dispatch(asyncUserLogout());
+   
   }
+
+  useEffect(() => {
+    if(logoutDone){
+      router.reload()
+    }
+    if(logoutError){
+      alert(logoutError);
+      return;
+    }
+  }, [logoutDone, logoutError])
+  
   return (
     <div className="p-10 flex items-center justify-between">
       <div>
@@ -60,19 +74,13 @@ export default function Home({user}) {
   )
 }
 
-export const getServerSideProps = async ({req}) => {
+export const getServerSideProps = wrapper.getServerSideProps((store) => async ({req}) => {
   try{
     const cookie = req.headers.cookie;
     if(!cookie) throw new Error("쿠키 정보가 없습니다.");
-    const result = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/api/auth/me`, {
-      headers: {
-        cookie: cookie,
-        
-      }
-    });
-    console.log(result.data)
+    await store.dispatch(asyncUserLoadMyInfo(cookie));
     return {
-      props: {user: result.data}
+      props: {}
     }
   }catch(err){
     console.log(err);
@@ -80,4 +88,4 @@ export const getServerSideProps = async ({req}) => {
       props: {}
     };
   }
-}
+})

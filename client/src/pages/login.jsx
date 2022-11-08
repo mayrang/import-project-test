@@ -1,26 +1,37 @@
 import React, { useState } from "react";
 import axios from "axios";
 import {useRouter} from "next/router";
+import { useDispatch, useSelector } from "react-redux";
+import { asyncUserLogin } from "../redux/reducers/UserSlice";
+import { useEffect } from "react";
 
 const Login = () => {
     const [email, setEmail] = useState("");
     const [nickname, setNickname] = useState("");
     const [error, setError] = useState({});
     const router = useRouter();
+    const dispatch = useDispatch();
+    const {loginDone, loginError} = useSelector((state) => state.user)
     const submitLogin = async (e) => {
         e.preventDefault();
-        try{
-            const result = await axios.post("/auth/login", {
-                email, 
-                nickname
-            });
-            console.log(result.data);
+        const data = {
+            email,
+            nickname
+        };
+        dispatch(asyncUserLogin(data));
+        console.log("loginDone", loginDone)
+        
+    };
+
+    useEffect(() => {
+        if(loginDone){
             router.push("/");
-        }catch(err){
-            console.log(err);
-            setError(err?.response?.data || {});
         }
-    }
+        if(loginError){
+            console.log(loginError);
+            setError(loginError || {});
+        }
+    }, [loginDone, loginError]);
     return (
         <div className="bg-gray-200">
             <div className="flex flex-col items-center justify-center h-screen">

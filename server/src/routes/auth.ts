@@ -55,7 +55,7 @@ router.post("/register", async (req:Request, res:Response) => {
 
     }catch(err){
         console.log(err);
-        return res.status(500).json({error: "회원가입 과정에서 서버에러"})
+        return res.status(500).send("회원가입 과정에서 서버에러")
     }
     
 });
@@ -86,12 +86,12 @@ router.post("/login", async (req:Request, res:Response) => {
 router.get("/me", userMiddleware, async (req:Request, res:Response) => {
     try{
         const user = res.locals.user;
-        if(!user) return res.status(400).json({error: "유저가 존재하지 않습니다."});
+        if(!user) return res.status(400).send("유저가 존재하지 않습니다.");
         else return res.status(200).json(user);
 
     }catch(err){
         console.log(err);
-        return res.status(500).json({error: "로그인 여부 체크 과정에서의 서버 에러"})
+        return res.status(500).send("로그인 여부 체크 과정에서의 서버 에러")
     }
 });
 

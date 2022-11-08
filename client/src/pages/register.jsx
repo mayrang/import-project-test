@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import axios from "axios";
 import {useRouter} from "next/router";
+import {useDispatch, useSelector} from "react-redux"
+import { asyncUserResister } from "../redux/reducers/UserSlice";
+import { useEffect } from "react";
+
 
 const Register = () => {
     const [nickname, setNickname] = useState("");
@@ -15,30 +19,39 @@ const Register = () => {
     const [error, setError] = useState({});
     const [level, setLevel] = useState("Normal");
     const router = useRouter();
+    const dispatch = useDispatch();
+    const {registerDone, registerError} = useSelector((state) => state.user);
+    
     const submitRegister =  async (e) => {
         e.preventDefault();
-        try{
-            if(nickname.trim() == "" || email.trim() == "" || level.trim() == "") return ;
-            const result = await axios.post("/auth/register", {
-                nickname,
-                email,
-                studentId,
-                phoneNumber,
-                department,
-                grade,
-                blog,
-                level,
-                fieldOfHope,
-                jobObjective
-                
 
-            });
-            console.log(result.data);
+        if(nickname.trim() == "" || email.trim() == "" || level.trim() == "") return ;
+        const data = {
+            nickname,
+            email,
+            studentId,
+            phoneNumber,
+            department,
+            grade,
+            blog,
+            level,
+            fieldOfHope,
+            jobObjective
+        };
+        dispatch(asyncUserResister(data));
+    };
+
+    useEffect(() => {
+        if(registerDone){
             router.push("/");
-        }catch(err){
-            console.log(err);
         }
-    }
+        if(registerError){
+            alert("회원가입 오류");
+            setError(registerError || {});
+            return;
+        }
+    }, [registerDone, registerError])
+
     return (
         <div className="bg-gray-200 w-full ">
         <div className="flex flex-col items-center justify-center p-6 h-screen">
