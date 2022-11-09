@@ -1,8 +1,23 @@
 import axios from "axios";
+import { useRouter } from "next/router";
 import React from "react";
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
 import AdminPage from "../../../components/AdminPage";
+import { asyncUserLoadMyInfo } from "../../../redux/reducers/UserSlice";
+import wrapper from "../../../redux/store";
 
 const ClubMembers = () => {
+    const {user} = useSelector((state) => state.user);
+    const router = useRouter();
+
+    useEffect(() => {
+        if(!user || user.level !== "Root"){
+            alert("관리자 권한만 접속할 수 있습니다.");
+            router.replace("/");
+        }
+    }, [user])
+ 
 
 
     return (
@@ -13,35 +28,12 @@ const ClubMembers = () => {
 
 export default ClubMembers;
 
-export const getServerSideProps = async ({req}) => {
-    try{
-        const cookie = req.headers.cookie;
-        if(!cookie) throw new Error("유저 식별 쿠키가 존재하지 않습니다.");
-        // 임시로 만든 로그인 체크 여부
-        const user = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/api/auth/me`, {
-            headers: {
-                cookie
-            }
-        });
-
-        // 관리자 권한만 접속가능하도록 에러 발생
-        console.log(user)
-        if(user.data.level !== "Root") throw new Error("권한이 없습니다.");
-        return {
-            props: {}
-        }
-    }catch(err){
-        console.log(err.message);
-
-       
-        // err.response.data 백엔드에서 넘어온 에러, err.message throw 에러
-        return {
-            redirect: {
-                permanent: false,
-                destination: "/"
-            },
-            props: {
-            }
-        }
+export const getServerSideProps = wrapper.getServerSideProps((store) => async ({req}) => {
+    const cookie = req.headers.cookie;
+    if(cookie){
+        await store.dispatch(asyncUserLoadMyInfo(cookie));
     }
-}
+    return {
+        props: {}
+    }
+}) 

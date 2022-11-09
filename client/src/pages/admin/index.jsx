@@ -3,20 +3,24 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
 import { useEffect } from "react";
+import { useSelector } from "react-redux";
+import { asyncUserLoadMyInfo } from "../../redux/reducers/UserSlice";
+import wrapper from "../../redux/store";
 
 
-const AdminIndex = ({error}) => {
+const AdminIndex = () => {
 
     const router = useRouter()
+    const {user} = useSelector((state) => state.user);
 
-    // error가 있으면 alert후 홈으로 리다이렉트
     useEffect(() => {
-        if(error){
-            console.log(error)
-            alert(error);
-            router.replace("/")
+        if(!user||user.level !== 'Root'){
+            alert("관리자만 접속할 수 있습니다.");
+            router.replace("/");
         }
-    },[error]);
+    }, [user])
+
+  
     
 
 
@@ -53,32 +57,15 @@ const AdminIndex = ({error}) => {
 
 export default AdminIndex;
 
-export const getServerSideProps = async ({req}) => {
-    try{
+export const getServerSideProps = wrapper.getServerSideProps((store) => async ({req}) => {
+  
         const cookie = req.headers.cookie;
-        if(!cookie) throw new Error("유저 식별 쿠키가 존재하지 않습니다.");
-        // 임시로 만든 로그인 체크 여부
-        const user = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/api/auth/me`, {
-            headers: {
-                cookie
-            }
-        });
+        if(cookie){
+            await store.dispatch(asyncUserLoadMyInfo(cookie));
+        }
 
-        // 관리자 권한만 접속가능하도록 에러 발생
-        console.log(user)
-        if(user.data.level !== "Root") throw new Error("권한이 없습니다.");
         return {
             props: {}
         }
-    }catch(err){
-        console.log(err.message);
-
-       
-        // err.response.data 백엔드에서 넘어온 에러, err.message throw 에러
-        return {
-            props: {
-               error: err.response?.data  || err.message || "error"
-            }
-        }
-    }
-}
+    
+}) 

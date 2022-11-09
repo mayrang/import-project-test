@@ -23,7 +23,7 @@ const AdminPage = ({path}) => {
         }catch(err){
             // error retry error 있어서 fecher단에서 router
             console.log(err, "error")
-            alert(err.response?.data?.error || err.response?.data || "error");
+            //alert(err.response?.data?.error || err.response?.data || "error");
             router.replace("/")
         }
     };
