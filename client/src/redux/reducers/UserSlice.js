@@ -8,7 +8,7 @@ export const asyncUserResister = createAsyncThunk(
             const result = await axios.post("/auth/register", data);
             return result.data;
         }catch(err){
-            console.log(err)
+            console.log(err);
             console.log(err.response.data);
             return rejectWithValue(err.response.data || {});
         }
@@ -21,7 +21,7 @@ export const asyncUserLogin = createAsyncThunk(
     async (data, {rejectWithValue}) => {
         try{
             const result = await axios.post("/auth/login", data);
-            console.log(result.data)
+            console.log(result.data);
             return result.data;
         }catch(err){
             console.log(err.response.data);
@@ -39,7 +39,6 @@ export const asyncUserLoadMyInfo = createAsyncThunk(
                     cookie: cookie
                 }
             });
-            console.log("loadUser", result.data)
             return result.data;
         }catch(err){
             console.log("error", err.response.data);
@@ -56,11 +55,10 @@ export const asyncUserLogout = createAsyncThunk(
             
         }catch(err){
             console.log("error", err);
-            return rejectWithValue(err.response.data)
+            return rejectWithValue(err.response.data);
         }
     }
-)
-
+);
 
 
 const initialState = {
@@ -77,7 +75,8 @@ const initialState = {
     logoutLoading: false,
     logoutDone: false,
     logoutError: null,
-}
+};
+
 
 const userSlice = createSlice({
     name: 'user',
@@ -105,7 +104,6 @@ const userSlice = createSlice({
             state.loginError = null;
         });
         builder.addCase(asyncUserLogin.fulfilled, (state, action) => {
-
             state.loginLoading = false;
             state.loginDone = true;
             state.loginError = null;
@@ -145,7 +143,7 @@ const userSlice = createSlice({
             state.logoutLoading = false;
             state.logoutDone = false;
             state.logoutError = action.payload;
-        })
+        });
     }
 });
 

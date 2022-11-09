@@ -16,15 +16,14 @@ const ClubMembers = () => {
             alert("관리자 권한만 접속할 수 있습니다.");
             router.replace("/");
         }
-    }, [user])
+    }, [user]);
  
-
-
     return (
         // path 용도: 백엔드 보낼 url, 컴포넌트에 어떤 페이지인지 알려주는 용도
         <AdminPage path={"/admin/members/club"} />
     );
 };
+
 
 export default ClubMembers;
 
@@ -36,4 +35,4 @@ export const getServerSideProps = wrapper.getServerSideProps((store) => async ({
     return {
         props: {}
     }
-}) 
+});
