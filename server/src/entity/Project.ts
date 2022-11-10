@@ -1,4 +1,5 @@
-import {Entity, BaseEntity, PrimaryGeneratedColumn, Column, JoinColumn, ManyToOne, CreateDateColumn} from "typeorm";
+import {Entity, BaseEntity, PrimaryGeneratedColumn, Column, JoinTable, ManyToMany, CreateDateColumn, OneToMany} from "typeorm";
+import { ProjectPost } from "./ProjectPost";
 import { User } from "./User";
 
 @Entity("projects")
@@ -21,7 +22,10 @@ export class Project extends BaseEntity {
     @Column()
     userId: number;
 
-    @ManyToOne(() => User, (user) => user.projects, {onDelete: "CASCADE"})
-    @JoinColumn({name: "userId", referencedColumnName: "userId"})
-    user: User
+    @ManyToMany (() => User, (user) => user.projects, {onDelete: "CASCADE"})
+    @JoinTable()
+    users: User[];
+
+    @OneToMany(() => User, (user) => user.projectPosts)
+    projectPosts: ProjectPost[];
 }

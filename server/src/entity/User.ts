@@ -1,4 +1,4 @@
-import {Entity, BaseEntity, PrimaryGeneratedColumn, Column, OneToMany} from "typeorm";
+import {Entity, BaseEntity, PrimaryGeneratedColumn, Column, OneToMany, ManyToMany, JoinTable} from "typeorm";
 import {IsEmail} from "class-validator";
 import { AvailableLanguage } from "./AvailableLanguage";
 import { AvailableFramework } from "./AvailableFramework";
@@ -8,6 +8,7 @@ import { Post } from "./Post";
 import { Comment } from "./Comment";
 import { Reservation } from "./Reservation";
 import { Schedule } from "./Schedule";
+import { ProjectPost } from "./ProjectPost";
 
 @Entity("users")
 export class User extends BaseEntity {
@@ -54,10 +55,21 @@ export class User extends BaseEntity {
     @OneToMany(() => ClubApplication, (clubApplication) => clubApplication.user, {cascade: true})
     clubApplications: ClubApplication[];
 
-    @OneToMany(() => Project, (project) => project.user, {cascade: true})
+    @ManyToMany(() => Project, (project) => project.users, {cascade: true})
+    @JoinTable({
+        name: "users_projects",
+        joinColumn: {
+            name: "userId",
+            referencedColumnName: "userId"
+        },
+        inverseJoinColumn: {
+            name: "projectId",
+            referencedColumnName: "projectId"
+        }
+    })
     projects: Project[];
 
-    @OneToMany(() => Project, (post) => post.user, {cascade: true})
+    @OneToMany(() => Project, (post) => post.users, {cascade: true})
     posts: Post[];
 
     @OneToMany(() => Comment, (comment) => comment.user, {cascade: true})
@@ -68,4 +80,7 @@ export class User extends BaseEntity {
 
     @OneToMany(() => Schedule, (schedule) => schedule.user, {cascade: true})
     schedules: Schedule[];
+
+    @OneToMany(() => ProjectPost, (projectPost) => projectPost.user)
+    projectPosts: ProjectPost[];
 }
