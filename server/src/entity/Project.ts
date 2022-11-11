@@ -20,6 +20,9 @@ export class Project extends BaseEntity {
     postTime: Date;
 
     @Column()
+    tags: string;
+
+    @Column()
     userId: number;
 
     @ManyToMany (() => User, (user) => user.projects, {onDelete: "CASCADE"})
