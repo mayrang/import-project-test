@@ -68,7 +68,11 @@ export default function Home() {
      
       </>
       )}
-      
+      <div>
+        <Link href={"/projects"}>
+          <a className="border rounded p-3">프로젝트 목록</a>
+        </Link>
+      </div>
 
     </div>
   )
