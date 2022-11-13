@@ -20,7 +20,10 @@ export class Project extends BaseEntity {
     postTime: Date;
 
     @Column()
-    tags: string;
+    fieldTags: string;
+
+    @Column()
+    stateTags: string;
 
     @Column()
     userId: number;
