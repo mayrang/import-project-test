@@ -23,7 +23,7 @@ export class Project extends BaseEntity {
     fieldTags: string;
 
     @Column()
-    stateTags: string;
+    stateTag: string;
 
     @Column()
     userId: number;
