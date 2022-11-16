@@ -7,8 +7,8 @@ const ProjectCreate = () => {
     const [main, setMain] = useState("");
     const [fieldTags, setFieldTags] = useState([]);
     const [checkEtc, setCheckEtc] = useState(false);
-    const [etc, setEtc] = useState("");
-    const [stateTag, setStateTag] = useState("");
+    const [etc, setEtc] = useState("")
+    const [stateTag, setStateTag] = useState("모집중");
     const [submit, setSubmit] = useState(false);
 
     useEffect(() => {
@@ -26,14 +26,6 @@ const ProjectCreate = () => {
     }
 
 
-    const handleStateCheck = (e) => {
-        if(e.target.checked){
-            setStateTag(e.target.name);
-        }else{
-            setStateTag("");
-        }
-    }
-
 
     const handleEtcFieldCheck = (e) => {
         if(e.target.checked){
@@ -50,11 +42,29 @@ const ProjectCreate = () => {
         if(checkEtc && etc.trim() !== ""){
             setFieldTags((prev) => [...prev, etc]);
         }
+        if(stateTag !== "모집중" && stateTag !== "진행중" && stateTag !== "완료"){
+            alert("올바른 상태 값을 선택해주세요");
+            return; 
+        }
+        if(projectTitle.trim() === ""){
+            alert("프로젝트 제목을 비워둘 수 없습니다.");
+            return;
+        }else if(main.trim() === ""){
+            alert("프로젝트 소개는 비워둘 수 없습니다.");
+            return;
+
+        }
         setSubmit(true);
     }   
     const handleSubmit = async () => {
         console.log(fieldTags);
+        console.log(stateTag);
+        console.log(projectTitle, main);
         
+    }
+
+    const handleSelectState = (e) => {
+        console.log(e.target.value)
     }
 
 
@@ -116,8 +126,8 @@ const ProjectCreate = () => {
                             </div>
                             <div className='w-11/12 py-2 px-4 flex flex-col'>
                                 <label htmlFor='fieldTags' className='text-lg'>진행 상황 선택</label>
-                                <select className='border bg-gray-100 w-4/12 mt-2 p-1'>
-                                    <option value="모집중" checked>모집중</option>
+                                <select value={stateTag} className='border bg-gray-100 w-4/12 mt-2 p-1' onChange={handleSelectState}>
+                                    <option value="모집중">모집중</option>
                                     <option value="진행중">진행중</option>
                                     <option value="완료">완료</option>
                                 </select>
