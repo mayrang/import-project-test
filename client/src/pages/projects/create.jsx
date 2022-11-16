@@ -8,8 +8,14 @@ const ProjectCreate = () => {
     const [fieldTags, setFieldTags] = useState([]);
     const [checkEtc, setCheckEtc] = useState(false);
     const [etc, setEtc] = useState("");
+    const [stateTag, setStateTag] = useState("");
+    const [submit, setSubmit] = useState(false);
 
-   
+    useEffect(() => {
+        if(submit){
+            handleSubmit();
+        }
+    }, [submit])
  
     const handleFieldCheck = (e) => {
         if(e.target.checked){
@@ -18,6 +24,16 @@ const ProjectCreate = () => {
             setFieldTags((prev) => prev.filter((it) => it !== e.target.name));
         }
     }
+
+
+    const handleStateCheck = (e) => {
+        if(e.target.checked){
+            setStateTag(e.target.name);
+        }else{
+            setStateTag("");
+        }
+    }
+
 
     const handleEtcFieldCheck = (e) => {
         if(e.target.checked){
@@ -28,12 +44,17 @@ const ProjectCreate = () => {
             setEtc("");
         }
     }
-    const handleSubmit = (e) => {
+
+    const clickSubmit = (e) => {
         e.preventDefault();
         if(checkEtc && etc.trim() !== ""){
             setFieldTags((prev) => [...prev, etc]);
         }
-        console.log(fieldTags)
+        setSubmit(true);
+    }   
+    const handleSubmit = async () => {
+        console.log(fieldTags);
+        
     }
 
 
@@ -42,7 +63,7 @@ const ProjectCreate = () => {
             <div className='flex items-center justify-center h-screen '>
                 <div className='w-10/12 md:w-9/12'>
                     <div className=' text-2xl font-semibold'>프로젝트 생성</div>
-                    <form onSubmit={handleSubmit}>
+                    <form onSubmit={clickSubmit}>
                         <div className='mt-2 bg-white border shadow-lg flex flex-col items-center justify-center'>
                             <div className='w-11/12 px-4 py-2 '>
                                 <label htmlFor='projectTitle' className='text-lg'>프로젝트 이름</label>
@@ -92,6 +113,14 @@ const ProjectCreate = () => {
                                 </div>
                                 
 
+                            </div>
+                            <div className='w-11/12 py-2 px-4 flex flex-col'>
+                                <label htmlFor='fieldTags' className='text-lg'>진행 상황 선택</label>
+                                <select className='border bg-gray-100 w-4/12 mt-2 p-1'>
+                                    <option value="모집중" checked>모집중</option>
+                                    <option value="진행중">진행중</option>
+                                    <option value="완료">완료</option>
+                                </select>
                             </div>
                             <div className='w-11/12 py-4 px-3'>
                                 <button type="submit"  className='bg-blue-400 border rounded shadow-sm p-3'>프로젝트 생성</button>
